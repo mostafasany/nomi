@@ -3,17 +3,18 @@
 import { useState } from "react";
 import { SIZES, SizeId, getSize } from "@/lib/sizes";
 import { fmt } from "@/lib/site";
-import { GiftOrder } from "@/lib/order";
+import { GiftOrder, validateCustomer } from "@/lib/order";
 import { Card } from "@/components/ui/Card";
 import { clsx } from "@/lib/clsx";
 import { CustomerFields, emptyCustomer } from "@/components/order/CustomerFields";
 import { WhatsAppButton } from "@/components/order/WhatsAppButton";
 
 export function GiftForm() {
-  const [sizeId, setSizeId]     = useState<SizeId>("medium");
+  const [sizeId, setSizeId]       = useState<SizeId>("medium");
   const [recipient, setRecipient] = useState("");
   const [note, setNote]           = useState("");
   const [customer, setCustomer]   = useState(emptyCustomer);
+  const [attempted, setAttempted] = useState(false);
 
   const size = getSize(sizeId);
 
@@ -24,6 +25,13 @@ export function GiftForm() {
     note,
     customer,
   };
+
+  const fieldErrors = validateCustomer(customer);
+  const orderErrors: string[] = [
+    ...(!recipient.trim() ? ["Add the recipient's name."] : []),
+    ...(!note.trim()      ? ["Add a note for them."]      : []),
+    ...Object.values(fieldErrors).filter((v): v is string => Boolean(v)),
+  ];
 
   return (
     <div className="grid md:grid-cols-2 gap-8">
@@ -78,10 +86,20 @@ export function GiftForm() {
         <p className="text-xs uppercase tracking-widest text-cocoa/60 font-semibold mb-3">
           Your details (for delivery)
         </p>
-        <CustomerFields value={customer} onChange={setCustomer} />
+        <CustomerFields
+          value={customer}
+          onChange={setCustomer}
+          errors={fieldErrors}
+          showAll={attempted}
+        />
 
         <div className="mt-5">
-          <WhatsAppButton order={order} disabled={!recipient.trim() || !note.trim()} label="Send the Nomi via WhatsApp" />
+          <WhatsAppButton
+            order={order}
+            errors={orderErrors}
+            onAttempt={() => setAttempted(true)}
+            label="Send the Nomi via WhatsApp"
+          />
         </div>
       </Card>
 

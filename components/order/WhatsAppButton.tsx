@@ -1,37 +1,65 @@
 "use client";
 
-import { Order, whatsappUrl, isCustomerValid } from "@/lib/order";
+import { MouseEvent } from "react";
+import { Order, whatsappUrl } from "@/lib/order";
 import { clsx } from "@/lib/clsx";
 
 type Props = {
   order: Order;
-  /** Extra disabled condition (e.g. empty cart). */
-  disabled?: boolean;
+  /** Reasons the order can't be sent. Empty array = ready. */
+  errors: string[];
+  /** Called when user clicks the disabled button. Use to mark fields as touched. */
+  onAttempt?: () => void;
   label?: string;
   className?: string;
 };
 
-export function WhatsAppButton({ order, disabled, label = "Send order via WhatsApp", className }: Props) {
-  const ok = !disabled && isCustomerValid(order.customer);
-  const href = ok ? whatsappUrl(order) : undefined;
+export function WhatsAppButton({
+  order, errors, onAttempt, label = "Send order via WhatsApp", className,
+}: Props) {
+  const ready = errors.length === 0;
+  const href = ready ? whatsappUrl(order) : "#";
 
-  const cls = clsx(
-    "inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-colors w-full",
-    ok ? "bg-[#25D366] text-white hover:bg-[#1FB955]" : "bg-cinnamon/20 text-cocoa/40 cursor-not-allowed",
-    className
-  );
+  const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
+    if (!ready) {
+      e.preventDefault();
+      onAttempt?.();
+    }
+  };
 
-  if (!ok) {
-    return (
-      <button type="button" disabled className={cls}>
-        <WhatsAppIcon /> {label}
-      </button>
-    );
-  }
   return (
-    <a href={href} target="_blank" rel="noopener noreferrer" className={cls}>
-      <WhatsAppIcon /> {label}
-    </a>
+    <div>
+      {!ready && errors.length > 0 && (
+        <div
+          className="mb-3 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-800"
+          role="alert"
+        >
+          <p className="font-semibold flex items-center gap-1.5">
+            <span aria-hidden>⚠</span> Before you can order:
+          </p>
+          <ul className="mt-1.5 space-y-0.5 list-disc list-inside marker:text-red-400">
+            {errors.map(e => <li key={e}>{e}</li>)}
+          </ul>
+        </div>
+      )}
+
+      <a
+        href={href}
+        target={ready ? "_blank" : undefined}
+        rel="noopener noreferrer"
+        onClick={handleClick}
+        aria-disabled={!ready || undefined}
+        className={clsx(
+          "inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-colors w-full",
+          ready
+            ? "bg-[#25D366] text-white hover:bg-[#1FB955]"
+            : "bg-cinnamon/20 text-cocoa/40 cursor-not-allowed",
+          className
+        )}
+      >
+        <WhatsAppIcon /> {label}
+      </a>
+    </div>
   );
 }
 

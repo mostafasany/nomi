@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { SIZES, SizeId, getSize } from "@/lib/sizes";
 import { fmt, SUBSCRIPTION } from "@/lib/site";
-import { SubOrder } from "@/lib/order";
+import { SubOrder, validateCustomer } from "@/lib/order";
 import { Card } from "@/components/ui/Card";
 import { clsx } from "@/lib/clsx";
 import { CustomerFields, emptyCustomer } from "@/components/order/CustomerFields";
@@ -12,10 +12,11 @@ import { WhatsAppButton } from "@/components/order/WhatsAppButton";
 const DAYS = SUBSCRIPTION.days;
 
 export function SubscribeForm() {
-  const [sizeId, setSizeId] = useState<SizeId>("medium");
-  const [qty, setQty]       = useState(2);
-  const [day, setDay]       = useState<string>("Sat");
+  const [sizeId, setSizeId]     = useState<SizeId>("medium");
+  const [qty, setQty]           = useState(2);
+  const [day, setDay]           = useState<string>("Sat");
   const [customer, setCustomer] = useState(emptyCustomer);
+  const [attempted, setAttempted] = useState(false);
 
   const size = getSize(sizeId);
   const weekly = size.price * qty;
@@ -28,6 +29,11 @@ export function SubscribeForm() {
     weeklyTotal: weekly,
     customer,
   };
+
+  const fieldErrors = validateCustomer(customer);
+  const orderErrors: string[] = Object.values(fieldErrors).filter(
+    (v): v is string => Boolean(v)
+  );
 
   return (
     <Card>
@@ -90,17 +96,27 @@ export function SubscribeForm() {
       <p className="text-xs uppercase tracking-widest text-cocoa/60 font-semibold mb-3">
         Your details (for delivery)
       </p>
-      <CustomerFields value={customer} onChange={setCustomer} />
+      <CustomerFields
+        value={customer}
+        onChange={setCustomer}
+        errors={fieldErrors}
+        showAll={attempted}
+      />
 
-      <div className="mt-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-t border-cinnamon/10 pt-6">
-        <div>
+      <div className="mt-6 flex flex-col md:flex-row md:items-start md:justify-between gap-4 border-t border-cinnamon/10 pt-6">
+        <div className="md:pt-2">
           <p className="text-sm text-cocoa/70">
             Every <strong>{day}</strong>. {fmt(weekly)} / week.
           </p>
           <p className="text-xs text-cocoa/50">Pause or cancel anytime.</p>
         </div>
-        <div className="md:w-80">
-          <WhatsAppButton order={order} label="Join the Roll Call via WhatsApp" />
+        <div className="md:w-96">
+          <WhatsAppButton
+            order={order}
+            errors={orderErrors}
+            onAttempt={() => setAttempted(true)}
+            label="Join the Roll Call via WhatsApp"
+          />
         </div>
       </div>
     </Card>

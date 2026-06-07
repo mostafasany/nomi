@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { SIZES, SizeId } from "@/lib/sizes";
 import { GLAZE_LEVELS } from "@/lib/glazes";
 import { CONTACT, fmt } from "@/lib/site";
-import { BoxOrder } from "@/lib/order";
+import { BoxOrder, validateCustomer } from "@/lib/order";
 import { Card } from "@/components/ui/Card";
 import { FrostingSlider } from "@/components/nomimeter/FrostingSlider";
 import { NomiMeter } from "@/components/nomimeter/NomiMeter";
@@ -20,6 +20,7 @@ export function BoxBuilder() {
   const [counts, setCounts]     = useState<Counts>(INITIAL);
   const [glazeIdx, setGlazeIdx] = useState(1);
   const [customer, setCustomer] = useState(emptyCustomer);
+  const [attempted, setAttempted] = useState(false);
   const glaze = GLAZE_LEVELS[glazeIdx];
 
   const totalItems  = counts.bites + counts.medium + counts.large;
@@ -47,6 +48,12 @@ export function BoxBuilder() {
     customer,
   };
 
+  const fieldErrors = validateCustomer(customer);
+  const orderErrors: string[] = [
+    ...(totalItems === 0 ? ["Add at least one roll to your box."] : []),
+    ...Object.values(fieldErrors).filter((v): v is string => Boolean(v)),
+  ];
+
   return (
     <div className="grid lg:grid-cols-[1fr,380px] gap-8">
       <div className="space-y-4">
@@ -69,7 +76,12 @@ export function BoxBuilder() {
           <h3 className="font-display text-2xl font-bold text-cinnamon">Delivery details</h3>
           <p className="text-sm text-cocoa/70 mt-1">{CONTACT.deliveryNote}</p>
           <div className="mt-4">
-            <CustomerFields value={customer} onChange={setCustomer} />
+            <CustomerFields
+              value={customer}
+              onChange={setCustomer}
+              errors={fieldErrors}
+              showAll={attempted}
+            />
           </div>
         </Card>
       </div>
@@ -124,12 +136,16 @@ export function BoxBuilder() {
           </dl>
 
           <div className="mt-5">
-            <WhatsAppButton order={order} disabled={totalItems === 0} />
-            <p className="mt-2 text-[11px] text-cocoa/60 text-center">
-              {totalItems === 0
-                ? "Add at least one roll to order."
-                : "Opens WhatsApp with your order pre-filled. Tap send."}
-            </p>
+            <WhatsAppButton
+              order={order}
+              errors={orderErrors}
+              onAttempt={() => setAttempted(true)}
+            />
+            {orderErrors.length === 0 && (
+              <p className="mt-2 text-[11px] text-cocoa/60 text-center">
+                Opens WhatsApp with your order pre-filled. Tap send.
+              </p>
+            )}
           </div>
         </Card>
       </aside>

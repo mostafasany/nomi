@@ -101,11 +101,24 @@ export function whatsappUrl(order: Order): string {
   return `https://wa.me/${phone}?text=${text}`;
 }
 
-/** True only when all required customer fields look reasonable. */
+export type FieldErrors = Partial<Record<keyof Customer, string>>;
+
+/** Per-field validation messages. Returns {} when valid. */
+export function validateCustomer(c: Customer): FieldErrors {
+  const errs: FieldErrors = {};
+  if (c.name.trim().length < 2) {
+    errs.name = "Please enter your name.";
+  }
+  const digits = c.phone.replace(/\D/g, "");
+  if (digits.length < 6) {
+    errs.phone = "Enter a valid phone number.";
+  }
+  if (c.address.trim().length < 5) {
+    errs.address = "Please enter a delivery address.";
+  }
+  return errs;
+}
+
 export function isCustomerValid(c: Customer): boolean {
-  return (
-    c.name.trim().length    > 1 &&
-    c.phone.trim().length   > 5 &&
-    c.address.trim().length > 4
-  );
+  return Object.keys(validateCustomer(c)).length === 0;
 }

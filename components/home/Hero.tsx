@@ -24,8 +24,10 @@ export function Hero() {
           </div>
         </div>
         <div className="relative flex justify-center">
-          <SteamEffect />
-          <LogoBadge size={400} className="drop-shadow-xl" />
+          <div className="relative w-full max-w-[400px] mx-auto px-6 md:px-0">
+            <SteamEffect />
+            <LogoBadge className="drop-shadow-xl" />
+          </div>
         </div>
       </div>
     </section>

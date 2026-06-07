@@ -3,10 +3,11 @@ import { clsx } from "@/lib/clsx";
 const CARAMEL = "#C99565";
 const CREAM   = "#F2E8D5";
 
-type Props = { size?: number; className?: string };
+type MarkProps  = { size?: number; className?: string };
+type BadgeProps = { className?: string };
 
 /** Tiny circular mark — used in navbars, favicons, anywhere the wordmark is too small to read. */
-export function LogoMark({ size = 40, className }: Props) {
+export function LogoMark({ size = 40, className }: MarkProps) {
   return (
     <svg
       viewBox="0 0 64 64"
@@ -26,14 +27,13 @@ export function LogoMark({ size = 40, className }: Props) {
   );
 }
 
-/** Full circular logo badge with wordmark, divider, tagline, and dot row. */
-export function LogoBadge({ size = 320, className }: Props) {
+/** Full circular logo badge. Responsive — control size via `className` (e.g. "w-72"). */
+export function LogoBadge({ className }: BadgeProps) {
   return (
     <svg
       viewBox="0 0 320 320"
-      width={size}
-      height={size}
-      className={className}
+      preserveAspectRatio="xMidYMid meet"
+      className={clsx("w-full h-auto block", className)}
       aria-label="Nömi's — Bakery & Cinnamon Rolls"
     >
       <circle cx="160" cy="160" r="160" fill={CARAMEL} />
