@@ -1,0 +1,98 @@
+{
+  "brand": {
+    "name": "Nömi's",
+    "tagline": "Bakery & Cinnamon Rolls",
+    "shortName": "Nomi",
+    "currency": "$",
+    "currencyCode": "USD"
+  },
+  "contact": {
+    "whatsappNumber": "+4917676700706",
+    "instagram": "https://www.instagram.com/nomis.bakery/",
+    "tiktok": "https://tiktok.com/",
+    "deliveryNote": "Cash on delivery."
+  },
+  "order": {
+    "minRolls": 1,
+    "deliveryFee": 0,
+    "leadTimeHours": 24,
+    "freshnessHours": 48
+  },
+  "sizes": [
+    {
+      "id": "bites",
+      "name": "Bites",
+      "tagline": "The Snack Attack",
+      "description": "Pop-able, shareable, dangerous in groups of 6+.",
+      "price": 2.5,
+      "diameterCm": 4,
+      "weightG": 35,
+      "compareTo": "Roughly a golf ball.",
+      "color": "bg-accent",
+      "ring": "ring-accent",
+      "emoji": "·"
+    },
+    {
+      "id": "medium",
+      "name": "Medium",
+      "tagline": "The Classic",
+      "description": "The solo indulgence. One roll, one happy human.",
+      "price": 5.5,
+      "diameterCm": 9,
+      "weightG": 110,
+      "compareTo": "Roughly a tennis ball.",
+      "color": "bg-caramel",
+      "ring": "ring-caramel",
+      "emoji": "○"
+    },
+    {
+      "id": "large",
+      "name": "Large",
+      "tagline": "The Showstopper",
+      "description": "Centerpiece energy. Built for sharing or… not.",
+      "price": 9.5,
+      "diameterCm": 14,
+      "weightG": 240,
+      "compareTo": "Roughly a softball.",
+      "color": "bg-cinnamon",
+      "ring": "ring-cinnamon",
+      "emoji": "◎"
+    }
+  ],
+  "glazes": {
+    "levels": [
+      {
+        "id": "light",
+        "name": "Light",
+        "surcharge": 0,
+        "description": "A polite drizzle."
+      },
+      {
+        "id": "standard",
+        "name": "Standard",
+        "surcharge": 0,
+        "description": "How we make it. Trust us."
+      },
+      {
+        "id": "drown",
+        "name": "Nomi Drown",
+        "surcharge": 1.5,
+        "description": "Bring a fork. And a bib."
+      }
+    ],
+    "rouletteOptions": [
+      "Maple Brown Butter",
+      "Cream Cheese Classic",
+      "Espresso Glaze",
+      "Salted Caramel",
+      "Vanilla Bean",
+      "Pistachio Rose",
+      "Dark Chocolate Drip",
+      "Lemon Glaze"
+    ]
+  },
+  "subscription": {
+    "discountPercent": 10,
+    "days": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+  }
+}

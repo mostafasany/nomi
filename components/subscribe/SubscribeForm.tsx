@@ -1,19 +1,33 @@
 "use client";
 
 import { useState } from "react";
-import { SIZES, SizeId } from "@/lib/sizes";
+import { SIZES, SizeId, getSize } from "@/lib/sizes";
+import { fmt, SUBSCRIPTION } from "@/lib/site";
+import { SubOrder } from "@/lib/order";
 import { Card } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
 import { clsx } from "@/lib/clsx";
+import { CustomerFields, emptyCustomer } from "@/components/order/CustomerFields";
+import { WhatsAppButton } from "@/components/order/WhatsAppButton";
 
-const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"] as const;
+const DAYS = SUBSCRIPTION.days;
 
 export function SubscribeForm() {
-  const [size, setSize] = useState<SizeId>("medium");
-  const [qty, setQty] = useState(2);
-  const [day, setDay] = useState<typeof DAYS[number]>("Sat");
+  const [sizeId, setSizeId] = useState<SizeId>("medium");
+  const [qty, setQty]       = useState(2);
+  const [day, setDay]       = useState<string>("Sat");
+  const [customer, setCustomer] = useState(emptyCustomer);
 
-  const weekly = SIZES.find(s => s.id === size)!.price * qty;
+  const size = getSize(sizeId);
+  const weekly = size.price * qty;
+
+  const order: SubOrder = {
+    kind: "subscription",
+    size,
+    qtyPerWeek: qty,
+    day,
+    weeklyTotal: weekly,
+    customer,
+  };
 
   return (
     <Card>
@@ -24,14 +38,14 @@ export function SubscribeForm() {
             {SIZES.map(s => (
               <button
                 key={s.id}
-                onClick={() => setSize(s.id)}
+                onClick={() => setSizeId(s.id)}
                 className={clsx(
                   "w-full text-left rounded-xl p-3 border-2 transition-all",
-                  size === s.id ? "border-accent bg-accent/10" : "border-cinnamon/10 hover:border-cinnamon/30"
+                  sizeId === s.id ? "border-accent bg-accent/10" : "border-cinnamon/10 hover:border-cinnamon/30"
                 )}
               >
                 <p className="font-bold text-cinnamon">{s.name}</p>
-                <p className="text-xs text-cocoa/70">${s.price.toFixed(2)}</p>
+                <p className="text-xs text-cocoa/70">{fmt(s.price)}</p>
               </button>
             ))}
           </div>
@@ -71,14 +85,23 @@ export function SubscribeForm() {
         </div>
       </div>
 
-      <div className="mt-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-t border-cinnamon/10 pt-6">
+      <hr className="my-6 border-cinnamon/10" />
+
+      <p className="text-xs uppercase tracking-widest text-cocoa/60 font-semibold mb-3">
+        Your details (for delivery)
+      </p>
+      <CustomerFields value={customer} onChange={setCustomer} />
+
+      <div className="mt-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-t border-cinnamon/10 pt-6">
         <div>
           <p className="text-sm text-cocoa/70">
-            Every <strong>{day}</strong>. ${weekly.toFixed(2)} / week.
+            Every <strong>{day}</strong>. {fmt(weekly)} / week.
           </p>
           <p className="text-xs text-cocoa/50">Pause or cancel anytime.</p>
         </div>
-        <Button variant="accent">Join the Roll Call</Button>
+        <div className="md:w-80">
+          <WhatsAppButton order={order} label="Join the Roll Call via WhatsApp" />
+        </div>
       </div>
     </Card>
   );

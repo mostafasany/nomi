@@ -3,19 +3,23 @@
 import { useMemo, useState } from "react";
 import { SIZES, SizeId } from "@/lib/sizes";
 import { GLAZE_LEVELS } from "@/lib/glazes";
-import { Button } from "@/components/ui/Button";
+import { CONTACT, fmt } from "@/lib/site";
+import { BoxOrder } from "@/lib/order";
 import { Card } from "@/components/ui/Card";
 import { FrostingSlider } from "@/components/nomimeter/FrostingSlider";
 import { NomiMeter } from "@/components/nomimeter/NomiMeter";
 import { BoxItemRow } from "./BoxItemRow";
+import { CustomerFields, emptyCustomer } from "@/components/order/CustomerFields";
+import { WhatsAppButton } from "@/components/order/WhatsAppButton";
 
 type Counts = Record<SizeId, number>;
 
 const INITIAL: Counts = { bites: 0, medium: 0, large: 0 };
 
 export function BoxBuilder() {
-  const [counts, setCounts]   = useState<Counts>(INITIAL);
+  const [counts, setCounts]     = useState<Counts>(INITIAL);
   const [glazeIdx, setGlazeIdx] = useState(1);
+  const [customer, setCustomer] = useState(emptyCustomer);
   const glaze = GLAZE_LEVELS[glazeIdx];
 
   const totalItems  = counts.bites + counts.medium + counts.large;
@@ -27,10 +31,21 @@ export function BoxBuilder() {
     () => SIZES.reduce((sum, s) => sum + s.price * counts[s.id], 0),
     [counts]
   );
-  const total = subtotal + glaze.surcharge * totalItems;
+  const glazeFee = glaze.surcharge * totalItems;
+  const total    = subtotal + glazeFee;
 
   const setCount = (id: SizeId, n: number) =>
     setCounts(c => ({ ...c, [id]: Math.max(0, n) }));
+
+  const order: BoxOrder = {
+    kind: "box",
+    items: SIZES.map(s => ({ size: s, qty: counts[s.id] })),
+    glaze,
+    subtotal,
+    glazeFee,
+    total,
+    customer,
+  };
 
   return (
     <div className="grid lg:grid-cols-[1fr,380px] gap-8">
@@ -48,6 +63,14 @@ export function BoxBuilder() {
         <Card>
           <h3 className="font-display text-2xl font-bold text-cinnamon">How much glaze?</h3>
           <FrostingSlider value={glazeIdx} onChange={setGlazeIdx} />
+        </Card>
+
+        <Card>
+          <h3 className="font-display text-2xl font-bold text-cinnamon">Delivery details</h3>
+          <p className="text-sm text-cocoa/70 mt-1">{CONTACT.deliveryNote}</p>
+          <div className="mt-4">
+            <CustomerFields value={customer} onChange={setCustomer} />
+          </div>
         </Card>
       </div>
 
@@ -88,21 +111,26 @@ export function BoxBuilder() {
           <dl className="mt-6 space-y-1.5 text-sm">
             <div className="flex justify-between">
               <dt className="text-cocoa/70">Rolls</dt>
-              <dd>${subtotal.toFixed(2)}</dd>
+              <dd>{fmt(subtotal)}</dd>
             </div>
             <div className="flex justify-between">
               <dt className="text-cocoa/70">Glaze ({glaze.name})</dt>
-              <dd>${(glaze.surcharge * totalItems).toFixed(2)}</dd>
+              <dd>{fmt(glazeFee)}</dd>
             </div>
             <div className="flex justify-between border-t border-cinnamon/10 pt-2 mt-2 text-base font-bold">
               <dt>Total</dt>
-              <dd>${total.toFixed(2)}</dd>
+              <dd>{fmt(total)}</dd>
             </div>
           </dl>
 
-          <Button variant="accent" className="w-full mt-5">
-            Checkout
-          </Button>
+          <div className="mt-5">
+            <WhatsAppButton order={order} disabled={totalItems === 0} />
+            <p className="mt-2 text-[11px] text-cocoa/60 text-center">
+              {totalItems === 0
+                ? "Add at least one roll to order."
+                : "Opens WhatsApp with your order pre-filled. Tap send."}
+            </p>
+          </div>
         </Card>
       </aside>
     </div>
