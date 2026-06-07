@@ -4,7 +4,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
-  title: "Nomi — Roll with it.",
+  title: "Nömi's — Bakery & Cinnamon Rolls",
   description: "Cinnamon rolls in three sizes: Bites, Medium, Large. One Nomi at a time.",
 };
 

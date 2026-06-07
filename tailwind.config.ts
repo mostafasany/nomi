@@ -8,12 +8,13 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        cream:    "#FBF4E8",
-        caramel:  "#C98A4B",
+        // brand palette — sampled from the Nömi's logo
+        cream:    "#F2E8D5", // logo wordmark cream
+        caramel:  "#C99565", // logo background tan
         cinnamon: "#7A3E20",
-        glaze:    "#FFF7E8",
+        glaze:    "#FAF1DE",
         cocoa:    "#3B1F12",
-        accent:   "#FF4F87", // hot pink accent
+        accent:   "#FF4F87",
         teal:     "#0E5C5C",
       },
       fontFamily: {

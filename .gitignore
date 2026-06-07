@@ -45,7 +45,10 @@ yarn-error.log*
 *.tsbuildinfo
 
 # editors
-.vscode/
+.vscode/*
+!.vscode/launch.json
+!.vscode/tasks.json
+!.vscode/extensions.json
 .idea/
 *.swp
 *.swo

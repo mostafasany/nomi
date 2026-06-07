@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/Button";
-import { RollSwirl } from "@/components/shared/RollSwirl";
+import { LogoBadge } from "@/components/ui/Logo";
 import { SteamEffect } from "@/components/shared/SteamEffect";
 
 export function Hero() {
@@ -25,7 +25,7 @@ export function Hero() {
         </div>
         <div className="relative flex justify-center">
           <SteamEffect />
-          <RollSwirl size={360} />
+          <LogoBadge size={400} className="drop-shadow-xl" />
         </div>
       </div>
     </section>
