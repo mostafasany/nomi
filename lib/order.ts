@@ -1,6 +1,7 @@
 import { CONTACT, SITE, fmt } from "@/lib/site";
 import { Size } from "@/lib/sizes";
 import { GlazeLevel } from "@/lib/glazes";
+import { ToppingSelection, toppingsPrice, toppingsLabel, toppingsCount } from "@/lib/toppings";
 
 export type Customer = {
   name: string;
@@ -9,9 +10,24 @@ export type Customer = {
   notes?: string;
 };
 
+export type CartLine = {
+  id: string;
+  size: Size;
+  toppings: ToppingSelection;
+  qty: number;
+};
+
+export function lineUnitPrice(line: CartLine): number {
+  return line.size.price + toppingsPrice(line.toppings);
+}
+
+export function lineSubtotal(line: CartLine): number {
+  return lineUnitPrice(line) * line.qty;
+}
+
 export type BoxOrder = {
   kind: "box";
-  items: Array<{ size: Size; qty: number }>;
+  lines: CartLine[];
   glaze: GlazeLevel;
   subtotal: number;
   glazeFee: number;
@@ -22,6 +38,7 @@ export type BoxOrder = {
 export type GiftOrder = {
   kind: "gift";
   size: Size;
+  toppings: ToppingSelection;
   recipient: string;
   note: string;
   customer: Customer;
@@ -30,6 +47,7 @@ export type GiftOrder = {
 export type SubOrder = {
   kind: "subscription";
   size: Size;
+  toppings: ToppingSelection;
   qtyPerWeek: number;
   day: string;
   weeklyTotal: number;
@@ -37,6 +55,21 @@ export type SubOrder = {
 };
 
 export type Order = BoxOrder | GiftOrder | SubOrder;
+
+function formatLine(line: CartLine): string {
+  const lines = [
+    `• ${line.qty}× ${line.size.name} — ${fmt(lineSubtotal(line))}`,
+  ];
+  if (toppingsCount(line.toppings) > 0) {
+    if (line.toppings.sauces.length > 0) {
+      lines.push(`   Sauce: ${line.toppings.sauces.map(s => s.name).join(", ")}`);
+    }
+    if (line.toppings.nuts.length > 0) {
+      lines.push(`   Nuts: ${line.toppings.nuts.map(n => n.name).join(", ")}`);
+    }
+  }
+  return lines.join("\n");
+}
 
 /** Build a human-readable WhatsApp message for an order. */
 export function buildMessage(order: Order): string {
@@ -53,15 +86,13 @@ export function buildMessage(order: Order): string {
   ].filter(Boolean).join("\n");
 
   if (order.kind === "box") {
-    const items = order.items
-      .filter(i => i.qty > 0)
-      .map(i => `• ${i.qty}× ${i.size.name} — ${fmt(i.size.price * i.qty)}`)
-      .join("\n");
     const body = [
       header,
       ``,
       `*Box*`,
-      items || "(empty)",
+      order.lines.length > 0
+        ? order.lines.map(formatLine).join("\n")
+        : "(empty)",
       ``,
       `Glaze: ${order.glaze.name}`,
       `Subtotal: ${fmt(order.subtotal)}`,
@@ -72,26 +103,38 @@ export function buildMessage(order: Order): string {
   }
 
   if (order.kind === "gift") {
-    const body = [
+    const lines = [
       header,
       ``,
       `*Gift*`,
-      `Size: ${order.size.name} (${fmt(order.size.price)})`,
-      `For: ${order.recipient}`,
-      `Note: ${order.note}`,
-    ].join("\n");
-    return `${body}\n${customer}`;
+      `Size: ${order.size.name} (${fmt(order.size.price + toppingsPrice(order.toppings))})`,
+    ];
+    if (order.toppings.sauces.length > 0) {
+      lines.push(`Sauce: ${order.toppings.sauces.map(s => s.name).join(", ")}`);
+    }
+    if (order.toppings.nuts.length > 0) {
+      lines.push(`Nuts: ${order.toppings.nuts.map(n => n.name).join(", ")}`);
+    }
+    lines.push(`For: ${order.recipient}`);
+    lines.push(`Note: ${order.note}`);
+    return `${lines.join("\n")}\n${customer}`;
   }
 
   // subscription
-  const body = [
+  const lines = [
     header,
     ``,
     `*Subscription — Weekly Roll Call*`,
     `${order.qtyPerWeek}× ${order.size.name} every ${order.day}`,
-    `Weekly: ${fmt(order.weeklyTotal)}`,
-  ].join("\n");
-  return `${body}\n${customer}`;
+  ];
+  if (order.toppings.sauces.length > 0) {
+    lines.push(`Sauce: ${order.toppings.sauces.map(s => s.name).join(", ")}`);
+  }
+  if (order.toppings.nuts.length > 0) {
+    lines.push(`Nuts: ${order.toppings.nuts.map(n => n.name).join(", ")}`);
+  }
+  lines.push(`Weekly: ${fmt(order.weeklyTotal)}`);
+  return `${lines.join("\n")}\n${customer}`;
 }
 
 /** Build a wa.me URL with the message pre-filled. */
@@ -103,7 +146,6 @@ export function whatsappUrl(order: Order): string {
 
 export type FieldErrors = Partial<Record<keyof Customer, string>>;
 
-/** Per-field validation messages. Returns {} when valid. */
 export function validateCustomer(c: Customer): FieldErrors {
   const errs: FieldErrors = {};
   if (c.name.trim().length < 2) {
@@ -122,3 +164,6 @@ export function validateCustomer(c: Customer): FieldErrors {
 export function isCustomerValid(c: Customer): boolean {
   return Object.keys(validateCustomer(c)).length === 0;
 }
+
+// silence unused — kept available for callers
+export { toppingsLabel };

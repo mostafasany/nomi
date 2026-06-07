@@ -4,26 +4,31 @@ import { useState } from "react";
 import { SIZES, SizeId, getSize } from "@/lib/sizes";
 import { fmt, SUBSCRIPTION } from "@/lib/site";
 import { SubOrder, validateCustomer } from "@/lib/order";
+import { ToppingSelection, noToppings, toppingsPrice } from "@/lib/toppings";
 import { Card } from "@/components/ui/Card";
 import { clsx } from "@/lib/clsx";
 import { CustomerFields, emptyCustomer } from "@/components/order/CustomerFields";
 import { WhatsAppButton } from "@/components/order/WhatsAppButton";
+import { ToppingPicker } from "@/components/order/ToppingPicker";
 
 const DAYS = SUBSCRIPTION.days;
 
 export function SubscribeForm() {
-  const [sizeId, setSizeId]     = useState<SizeId>("medium");
-  const [qty, setQty]           = useState(2);
-  const [day, setDay]           = useState<string>("Sat");
-  const [customer, setCustomer] = useState(emptyCustomer);
+  const [sizeId, setSizeId]       = useState<SizeId>("medium");
+  const [toppings, setToppings]   = useState<ToppingSelection>(noToppings);
+  const [qty, setQty]             = useState(2);
+  const [day, setDay]             = useState<string>("Sat");
+  const [customer, setCustomer]   = useState(emptyCustomer);
   const [attempted, setAttempted] = useState(false);
 
   const size = getSize(sizeId);
-  const weekly = size.price * qty;
+  const unit = size.price + toppingsPrice(toppings);
+  const weekly = unit * qty;
 
   const order: SubOrder = {
     kind: "subscription",
     size,
+    toppings,
     qtyPerWeek: qty,
     day,
     weeklyTotal: weekly,
@@ -89,6 +94,10 @@ export function SubscribeForm() {
             ))}
           </div>
         </div>
+      </div>
+
+      <div className="mt-6">
+        <ToppingPicker value={toppings} onChange={setToppings} compact />
       </div>
 
       <hr className="my-6 border-cinnamon/10" />

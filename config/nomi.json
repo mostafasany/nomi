@@ -59,6 +59,16 @@
       "emoji": "◎"
     }
   ],
+  "toppings": {
+    "sauces": [
+      { "id": "caramel",   "name": "Caramel",   "price": 0.50, "emoji": "🍯" },
+      { "id": "chocolate", "name": "Chocolate", "price": 0.50, "emoji": "🍫" }
+    ],
+    "nuts": [
+      { "id": "pecan",     "name": "Pecan",     "price": 0.75, "emoji": "🌰" },
+      { "id": "pistachio", "name": "Pistachio", "price": 1.00, "emoji": "💚" }
+    ]
+  },
   "glazes": {
     "levels": [
       {

@@ -1,46 +1,64 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { SIZES, SizeId } from "@/lib/sizes";
+import { useMemo, useState, useRef } from "react";
+import { SizeId, getSize } from "@/lib/sizes";
 import { GLAZE_LEVELS } from "@/lib/glazes";
 import { CONTACT, fmt } from "@/lib/site";
-import { BoxOrder, validateCustomer } from "@/lib/order";
+import { BoxOrder, CartLine, lineSubtotal, validateCustomer } from "@/lib/order";
+import { ToppingSelection } from "@/lib/toppings";
 import { Card } from "@/components/ui/Card";
 import { FrostingSlider } from "@/components/nomimeter/FrostingSlider";
 import { NomiMeter } from "@/components/nomimeter/NomiMeter";
-import { BoxItemRow } from "./BoxItemRow";
 import { CustomerFields, emptyCustomer } from "@/components/order/CustomerFields";
 import { WhatsAppButton } from "@/components/order/WhatsAppButton";
-
-type Counts = Record<SizeId, number>;
-
-const INITIAL: Counts = { bites: 0, medium: 0, large: 0 };
+import { RollConfigurator } from "./RollConfigurator";
+import { CartLineItem } from "./CartLineItem";
 
 export function BoxBuilder() {
-  const [counts, setCounts]     = useState<Counts>(INITIAL);
-  const [glazeIdx, setGlazeIdx] = useState(1);
-  const [customer, setCustomer] = useState(emptyCustomer);
+  const [lines, setLines]         = useState<CartLine[]>([]);
+  const [glazeIdx, setGlazeIdx]   = useState(1);
+  const [customer, setCustomer]   = useState(emptyCustomer);
   const [attempted, setAttempted] = useState(false);
+  const idRef = useRef(0);
+
   const glaze = GLAZE_LEVELS[glazeIdx];
 
-  const totalItems  = counts.bites + counts.medium + counts.large;
+  const totalItems  = lines.reduce((s, l) => s + l.qty, 0);
   const totalWeight = useMemo(
-    () => SIZES.reduce((sum, s) => sum + s.weightG * counts[s.id], 0),
-    [counts]
+    () => lines.reduce((s, l) => s + l.size.weightG * l.qty, 0),
+    [lines]
   );
   const subtotal = useMemo(
-    () => SIZES.reduce((sum, s) => sum + s.price * counts[s.id], 0),
-    [counts]
+    () => lines.reduce((s, l) => s + lineSubtotal(l), 0),
+    [lines]
   );
   const glazeFee = glaze.surcharge * totalItems;
   const total    = subtotal + glazeFee;
 
-  const setCount = (id: SizeId, n: number) =>
-    setCounts(c => ({ ...c, [id]: Math.max(0, n) }));
+  const addLine = (sizeId: SizeId, toppings: ToppingSelection, qty: number) => {
+    idRef.current += 1;
+    const newLine: CartLine = {
+      id: `line-${idRef.current}`,
+      size: getSize(sizeId),
+      toppings,
+      qty,
+    };
+    setLines(ls => [...ls, newLine]);
+  };
+
+  const updateQty = (id: string, delta: number) =>
+    setLines(ls => ls.flatMap(l => {
+      if (l.id !== id) return [l];
+      const q = l.qty + delta;
+      return q <= 0 ? [] : [{ ...l, qty: q }];
+    }));
+
+  const removeLine = (id: string) =>
+    setLines(ls => ls.filter(l => l.id !== id));
 
   const order: BoxOrder = {
     kind: "box",
-    items: SIZES.map(s => ({ size: s, qty: counts[s.id] })),
+    lines,
     glaze,
     subtotal,
     glazeFee,
@@ -50,22 +68,50 @@ export function BoxBuilder() {
 
   const fieldErrors = validateCustomer(customer);
   const orderErrors: string[] = [
-    ...(totalItems === 0 ? ["Add at least one roll to your box."] : []),
+    ...(lines.length === 0 ? ["Add at least one roll to your box."] : []),
     ...Object.values(fieldErrors).filter((v): v is string => Boolean(v)),
   ];
 
   return (
     <div className="grid lg:grid-cols-[1fr,380px] gap-8">
       <div className="space-y-4">
-        {SIZES.map(s => (
-          <BoxItemRow
-            key={s.id}
-            size={s}
-            count={counts[s.id]}
-            onInc={() => setCount(s.id, counts[s.id] + 1)}
-            onDec={() => setCount(s.id, counts[s.id] - 1)}
-          />
-        ))}
+        <Card>
+          <h3 className="font-display text-2xl font-bold text-cinnamon">Customize a roll</h3>
+          <p className="text-sm text-cocoa/70 mt-1">
+            Pick a size, add sauce or nuts, set quantity, add to box.
+          </p>
+          <div className="mt-5">
+            <RollConfigurator onAdd={addLine} />
+          </div>
+        </Card>
+
+        <Card>
+          <div className="flex items-baseline justify-between">
+            <h3 className="font-display text-2xl font-bold text-cinnamon">Your box</h3>
+            {totalItems > 0 && (
+              <p className="text-sm text-cocoa/60">
+                {totalItems} {totalItems === 1 ? "roll" : "rolls"} · {totalWeight}g
+              </p>
+            )}
+          </div>
+          {lines.length === 0 ? (
+            <p className="text-sm text-cocoa/60 mt-3 italic">
+              Empty for now. Build your first roll above.
+            </p>
+          ) : (
+            <div className="mt-4 space-y-2">
+              {lines.map(l => (
+                <CartLineItem
+                  key={l.id}
+                  line={l}
+                  onIncQty={() => updateQty(l.id, +1)}
+                  onDecQty={() => updateQty(l.id, -1)}
+                  onRemove={() => removeLine(l.id)}
+                />
+              ))}
+            </div>
+          )}
+        </Card>
 
         <Card>
           <h3 className="font-display text-2xl font-bold text-cinnamon">How much glaze?</h3>
@@ -88,9 +134,9 @@ export function BoxBuilder() {
 
       <aside className="lg:sticky lg:top-24 h-fit">
         <Card>
-          <p className="text-xs uppercase tracking-widest text-accent font-semibold">Your box</p>
+          <p className="text-xs uppercase tracking-widest text-accent font-semibold">Summary</p>
           <h3 className="font-display text-3xl font-extrabold text-cinnamon mt-1">
-            {totalItems === 0 ? "Empty" : `${totalItems} rolls`}
+            {totalItems === 0 ? "Empty" : `${totalItems} ${totalItems === 1 ? "roll" : "rolls"}`}
           </h3>
 
           <div
@@ -103,14 +149,14 @@ export function BoxBuilder() {
                 : `Getting heavier… ${totalWeight}g`}
             </p>
             <div className="mt-3 flex flex-wrap gap-1.5">
-              {SIZES.flatMap(s =>
-                Array.from({ length: counts[s.id] }).map((_, i) => (
+              {lines.flatMap(l =>
+                Array.from({ length: l.qty }).map((_, i) => (
                   <span
-                    key={`${s.id}-${i}`}
-                    className={`inline-block rounded-full ${s.color}`}
+                    key={`${l.id}-${i}`}
+                    className={`inline-block rounded-full ${l.size.color}`}
                     style={{
-                      width: s.id === "large" ? 32 : s.id === "medium" ? 20 : 12,
-                      height: s.id === "large" ? 32 : s.id === "medium" ? 20 : 12,
+                      width:  l.size.id === "large" ? 32 : l.size.id === "medium" ? 20 : 12,
+                      height: l.size.id === "large" ? 32 : l.size.id === "medium" ? 20 : 12,
                     }}
                   />
                 ))
@@ -122,7 +168,7 @@ export function BoxBuilder() {
 
           <dl className="mt-6 space-y-1.5 text-sm">
             <div className="flex justify-between">
-              <dt className="text-cocoa/70">Rolls</dt>
+              <dt className="text-cocoa/70">Rolls + toppings</dt>
               <dd>{fmt(subtotal)}</dd>
             </div>
             <div className="flex justify-between">
