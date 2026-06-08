@@ -1,11 +1,7 @@
 /** @type {import('next').NextConfig} */
-const isProd = process.env.NODE_ENV === "production";
-const repo = "nomi"; // GitHub repo name — site lives at /<repo>
-
+// Site is served at the root of a custom domain (nomiroll.com) — no basePath needed.
 const nextConfig = {
   output: "export",
-  basePath:    isProd ? `/${repo}` : "",
-  assetPrefix: isProd ? `/${repo}/` : "",
   images: { unoptimized: true },
   trailingSlash: true,
 };
