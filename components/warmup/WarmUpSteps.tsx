@@ -5,7 +5,7 @@ const METHODS = [
     steps: [
       "Place Nomi on a plate.",
       "Cover loosely with a damp paper towel.",
-      "Microwave 10 seconds. 15 for a Large.",
+      "Microwave 10 seconds.",
       "Eat immediately. No exceptions.",
     ],
   },
@@ -15,7 +15,7 @@ const METHODS = [
     steps: [
       "Preheat oven to 300°F (150°C).",
       "Wrap Nomi loosely in foil.",
-      "Warm for 5 minutes — 7 for a Large.",
+      "Warm for 5 minutes.",
       "Drizzle extra glaze. Yes, more.",
     ],
   },
@@ -34,10 +34,17 @@ const METHODS = [
 export function WarmUpSteps() {
   return (
     <div className="grid md:grid-cols-3 gap-6">
-      {METHODS.map(m => (
-        <article key={m.name} className="rounded-3xl bg-glaze border border-cinnamon/10 p-6">
-          <p className="text-xs uppercase tracking-widest text-accent font-semibold">{m.time}</p>
-          <h3 className="font-display text-3xl font-extrabold text-cinnamon mt-1">{m.name}</h3>
+      {METHODS.map((m) => (
+        <article
+          key={m.name}
+          className="rounded-3xl bg-glaze border border-cinnamon/10 p-6"
+        >
+          <p className="text-xs uppercase tracking-widest text-accent font-semibold">
+            {m.time}
+          </p>
+          <h3 className="font-display text-3xl font-extrabold text-cinnamon mt-1">
+            {m.name}
+          </h3>
           <ol className="mt-4 space-y-3">
             {m.steps.map((s, i) => (
               <li key={i} className="flex gap-3">

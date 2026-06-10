@@ -1,7 +1,8 @@
 "use client";
 
-import { GLAZE_LEVELS } from "@/lib/glazes";
 import { clsx } from "@/lib/clsx";
+import { GLAZE_LEVELS } from "@/lib/glazes";
+import { fmt } from "@/lib/site";
 
 type Props = { value: number; onChange: (v: number) => void };
 
@@ -14,7 +15,7 @@ export function FrostingSlider({ value, onChange }: Props) {
         max={2}
         step={1}
         value={value}
-        onChange={e => onChange(Number(e.target.value))}
+        onChange={(e) => onChange(Number(e.target.value))}
         className="w-full accent-accent"
         aria-label="Glaze level"
       />
@@ -25,13 +26,15 @@ export function FrostingSlider({ value, onChange }: Props) {
             onClick={() => onChange(i)}
             className={clsx(
               "text-left transition-opacity",
-              i === value ? "opacity-100" : "opacity-50 hover:opacity-80"
+              i === value ? "opacity-100" : "opacity-50 hover:opacity-80",
             )}
           >
             <p className="font-bold text-cinnamon">{g.name}</p>
             <p className="text-cocoa/70">{g.description}</p>
             {g.surcharge > 0 && (
-              <p className="text-accent font-semibold mt-1">+${g.surcharge.toFixed(2)}/roll</p>
+              <p className="text-accent font-semibold mt-1">
+                +{fmt(g.surcharge)}/roll
+              </p>
             )}
           </button>
         ))}

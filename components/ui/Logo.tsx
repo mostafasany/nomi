@@ -14,7 +14,7 @@ export function LogoMark({ size = 40, className }: MarkProps) {
       width={size}
       height={size}
       className={className}
-      aria-label="Nömi's"
+      aria-label="NömiRoll"
     >
       <circle cx="32" cy="32" r="32" fill={CARAMEL} />
       <g stroke={CREAM} strokeWidth="1.2" fill="none" strokeLinecap="round">
@@ -34,7 +34,7 @@ export function LogoBadge({ className }: BadgeProps) {
       viewBox="0 0 320 320"
       preserveAspectRatio="xMidYMid meet"
       className={clsx("w-full h-auto block", className)}
-      aria-label="Nömi's — Bakery & Cinnamon Rolls"
+      aria-label="Nömi — Rolls & Bakery"
     >
       <circle cx="160" cy="160" r="160" fill={CARAMEL} />
 
@@ -54,37 +54,37 @@ export function LogoBadge({ className }: BadgeProps) {
       {/* wordmark */}
       <text
         x="160"
-        y="190"
+        y="195"
         textAnchor="middle"
         fontFamily='"Fraunces", ui-serif, Georgia, serif'
         fontWeight={800}
-        fontSize="64"
+        fontSize="72"
         letterSpacing="-1"
         fill={CREAM}
       >
-        N&#xD6;MI&#x2019;S
+        N&#xD6;MI
       </text>
 
       {/* divider */}
-      <line x1="90" y1="215" x2="230" y2="215" stroke={CREAM} strokeWidth="0.8" opacity="0.85" />
+      <line x1="90" y1="220" x2="230" y2="220" stroke={CREAM} strokeWidth="0.8" opacity="0.85" />
 
       {/* tagline */}
       <text
         x="160"
-        y="235"
+        y="240"
         textAnchor="middle"
         fontFamily='"Fraunces", ui-serif, Georgia, serif'
         fontSize="11"
         letterSpacing="3"
         fill={CREAM}
       >
-        BAKERY &amp; CINNAMON ROLLS
+        ROLLS &amp; BAKERY
       </text>
 
       {/* dot row */}
       <g fill={CREAM}>
         {[-24, -12, 0, 12, 24].map(dx => (
-          <circle key={dx} cx={160 + dx} cy={258} r="2" />
+          <circle key={dx} cx={160 + dx} cy={263} r="2" />
         ))}
       </g>
     </svg>
