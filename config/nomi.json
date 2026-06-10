@@ -1,43 +1,31 @@
 {
   "brand": {
-    "name": "Nömi's",
+    "name": "Nömi",
     "tagline": "Bakery & Cinnamon Rolls",
-    "shortName": "Nomi",
-    "currency": "$",
-    "currencyCode": "USD"
+    "shortName": "Nömi",
+    "currency": "€",
+    "currencyCode": "EUR"
   },
   "contact": {
-    "whatsappNumber": "+4917676700706",
-    "instagram": "https://www.instagram.com/nomis.bakery/",
+    "whatsappNumber": "+201020229932",
+    "instagram": "https://www.instagram.com/Nömis.bakery/",
     "tiktok": "https://tiktok.com/",
     "deliveryNote": "Cash on delivery."
   },
   "order": {
-    "minRolls": 1,
+    "minRolls": 4,
     "deliveryFee": 0,
     "leadTimeHours": 24,
     "freshnessHours": 48
   },
   "sizes": [
     {
-      "id": "bites",
-      "name": "Bites",
-      "tagline": "The Snack Attack",
-      "description": "Pop-able, shareable, dangerous in groups of 6+.",
-      "price": 2.5,
-      "diameterCm": 4,
-      "weightG": 35,
-      "compareTo": "Roughly a golf ball.",
-      "color": "bg-accent",
-      "ring": "ring-accent",
-      "emoji": "·"
-    },
-    {
-      "id": "medium",
-      "name": "Medium",
-      "tagline": "The Classic",
-      "description": "The solo indulgence. One roll, one happy human.",
-      "price": 5.5,
+      "id": "classic",
+      "name": "Classic",
+      "tagline": "The Signature",
+      "description": "The Nömi standard. Soft, swirled, glazed with cream cheese, and ready for you.",
+      "price": 3.5,
+      "minQty": 1,
       "diameterCm": 9,
       "weightG": 110,
       "compareTo": "Roughly a tennis ball.",
@@ -46,27 +34,61 @@
       "emoji": "○"
     },
     {
-      "id": "large",
-      "name": "Large",
-      "tagline": "The Showstopper",
-      "description": "Centerpiece energy. Built for sharing or… not.",
-      "price": 9.5,
-      "diameterCm": 14,
-      "weightG": 240,
-      "compareTo": "Roughly a softball.",
-      "color": "bg-cinnamon",
-      "ring": "ring-cinnamon",
-      "emoji": "◎"
+      "id": "bites",
+      "name": "Bites (12 Pieces)",
+      "tagline": "The Share Pack",
+      "description": "Twelve bite-sized Nömi pieces for sharing, snacking, or pretending to share.",
+      "price": 12,
+      "minQty": 1,
+      "diameterCm": 4,
+      "weightG": 420,
+      "compareTo": "A dozen mini swirls.",
+      "color": "bg-accent",
+      "ring": "ring-accent",
+      "emoji": "·"
     }
   ],
   "toppings": {
     "sauces": [
-      { "id": "caramel",   "name": "Caramel",   "price": 0.50, "emoji": "🍯" },
-      { "id": "chocolate", "name": "Chocolate", "price": 0.50, "emoji": "🍫" }
+      {
+        "id": "original",
+        "name": "Original (Classic Glaze)",
+        "price": 0.0,
+        "emoji": "✨"
+      },
+      { "id": "caramel", "name": "Caramel", "price": 0.5, "emoji": "🍯" },
+      { "id": "chocolate", "name": "Chocolate", "price": 0.5, "emoji": "🍫" },
+      { "id": "bueno", "name": "Bueno", "price": 0.5, "emoji": "🍫" },
+      { "id": "lotus", "name": "Lotus", "price": 0.5, "emoji": "🍪" },
+      {
+        "id": "pistachio-sauce",
+        "name": "Pistachio Cream",
+        "price": 0.5,
+        "emoji": "🫒"
+      }
+    ]
+  },
+  "extras": {
+    "sauces": [
+      { "id": "caramel", "name": "Caramel", "price": 0.5, "emoji": "🍯" },
+      { "id": "chocolate", "name": "Chocolate", "price": 0.5, "emoji": "🍫" },
+      { "id": "bueno", "name": "Bueno", "price": 0.5, "emoji": "🍫" },
+      { "id": "lotus", "name": "Lotus", "price": 0.5, "emoji": "🍪" },
+      {
+        "id": "pistachio-sauce",
+        "name": "Pistachio Cream",
+        "price": 0.5,
+        "emoji": "🫒"
+      }
     ],
     "nuts": [
-      { "id": "pecan",     "name": "Pecan",     "price": 0.75, "emoji": "🌰" },
-      { "id": "pistachio", "name": "Pistachio", "price": 1.00, "emoji": "💚" }
+      { "id": "pecan", "name": "Pecan Nuts", "price": 1.0, "emoji": "🌰" },
+      {
+        "id": "pistachio",
+        "name": "Pistachio Nuts",
+        "price": 1.0,
+        "emoji": "🫒"
+      }
     ]
   },
   "glazes": {
@@ -85,7 +107,7 @@
       },
       {
         "id": "drown",
-        "name": "Nomi Drown",
+        "name": "Nömi Drown",
         "surcharge": 1.5,
         "description": "Bring a fork. And a bib."
       }

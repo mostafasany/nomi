@@ -1,29 +1,49 @@
 "use client";
 
-import { useState } from "react";
-import { SIZES, SizeId, getSize } from "@/lib/sizes";
-import { fmt, SUBSCRIPTION } from "@/lib/site";
-import { SubOrder, validateCustomer } from "@/lib/order";
-import { ToppingSelection, noToppings, toppingsPrice } from "@/lib/toppings";
+import {
+  CustomerFields,
+  emptyCustomer,
+} from "@/components/order/CustomerFields";
+import { ToppingPicker } from "@/components/order/ToppingPicker";
+import { WhatsAppButton } from "@/components/order/WhatsAppButton";
 import { Card } from "@/components/ui/Card";
 import { clsx } from "@/lib/clsx";
-import { CustomerFields, emptyCustomer } from "@/components/order/CustomerFields";
-import { WhatsAppButton } from "@/components/order/WhatsAppButton";
-import { ToppingPicker } from "@/components/order/ToppingPicker";
+import { SubOrder, validateCustomer } from "@/lib/order";
+import { SUBSCRIPTION, fmt } from "@/lib/site";
+import {
+  DEFAULT_SIZE_ID,
+  SIZES,
+  SizeId,
+  getSize,
+  minQtyForSize,
+} from "@/lib/sizes";
+import {
+  ToppingSelection,
+  addonsPrice,
+  noToppings,
+  saucesPrice,
+} from "@/lib/toppings";
+import { useState } from "react";
 
 const DAYS = SUBSCRIPTION.days;
 
 export function SubscribeForm() {
-  const [sizeId, setSizeId]       = useState<SizeId>("medium");
-  const [toppings, setToppings]   = useState<ToppingSelection>(noToppings);
-  const [qty, setQty]             = useState(2);
-  const [day, setDay]             = useState<string>("Sat");
-  const [customer, setCustomer]   = useState(emptyCustomer);
+  const [sizeId, setSizeId] = useState<SizeId>(DEFAULT_SIZE_ID);
+  const [toppings, setToppings] = useState<ToppingSelection>(noToppings);
+  const [qty, setQty] = useState(minQtyForSize(getSize(DEFAULT_SIZE_ID)));
+  const [day, setDay] = useState<string>("Sat");
+  const [customer, setCustomer] = useState(emptyCustomer);
   const [attempted, setAttempted] = useState(false);
 
   const size = getSize(sizeId);
-  const unit = size.price + toppingsPrice(toppings);
-  const weekly = unit * qty;
+  const minQty = minQtyForSize(size);
+  const unit = size.price + saucesPrice(toppings);
+  const weekly = unit * qty + addonsPrice(toppings);
+
+  const handleSizeChange = (nextSizeId: SizeId) => {
+    setSizeId(nextSizeId);
+    setQty(minQtyForSize(getSize(nextSizeId)));
+  };
 
   const order: SubOrder = {
     kind: "subscription",
@@ -37,22 +57,26 @@ export function SubscribeForm() {
 
   const fieldErrors = validateCustomer(customer);
   const orderErrors: string[] = Object.values(fieldErrors).filter(
-    (v): v is string => Boolean(v)
+    (v): v is string => Boolean(v),
   );
 
   return (
     <Card>
       <div className="grid md:grid-cols-3 gap-6">
         <div>
-          <label className="text-xs uppercase tracking-widest text-cocoa/60 font-semibold">Size</label>
+          <label className="text-xs uppercase tracking-widest text-cocoa/60 font-semibold">
+            Size
+          </label>
           <div className="mt-2 space-y-2">
-            {SIZES.map(s => (
+            {SIZES.map((s) => (
               <button
                 key={s.id}
-                onClick={() => setSizeId(s.id)}
+                onClick={() => handleSizeChange(s.id)}
                 className={clsx(
                   "w-full text-left rounded-xl p-3 border-2 transition-all",
-                  sizeId === s.id ? "border-accent bg-accent/10" : "border-cinnamon/10 hover:border-cinnamon/30"
+                  sizeId === s.id
+                    ? "border-accent bg-accent/10"
+                    : "border-cinnamon/10 hover:border-cinnamon/30",
                 )}
               >
                 <p className="font-bold text-cinnamon">{s.name}</p>
@@ -63,30 +87,42 @@ export function SubscribeForm() {
         </div>
 
         <div>
-          <label className="text-xs uppercase tracking-widest text-cocoa/60 font-semibold">Quantity / week</label>
+          <label className="text-xs uppercase tracking-widest text-cocoa/60 font-semibold">
+            Quantity / week
+          </label>
           <div className="mt-2 flex items-center gap-3">
             <button
-              onClick={() => setQty(q => Math.max(1, q - 1))}
+              onClick={() => setQty((q) => Math.max(minQty, q - 1))}
               className="h-10 w-10 rounded-full bg-cinnamon/10 text-cinnamon font-bold"
-            >−</button>
-            <span className="w-12 text-center font-bold text-2xl tabular-nums">{qty}</span>
+            >
+              −
+            </button>
+            <span className="w-12 text-center font-bold text-2xl tabular-nums">
+              {qty}
+            </span>
             <button
-              onClick={() => setQty(q => q + 1)}
+              onClick={() => setQty((q) => q + 1)}
               className="h-10 w-10 rounded-full bg-cinnamon text-cream font-bold"
-            >+</button>
+            >
+              +
+            </button>
           </div>
         </div>
 
         <div>
-          <label className="text-xs uppercase tracking-widest text-cocoa/60 font-semibold">Delivery day</label>
+          <label className="text-xs uppercase tracking-widest text-cocoa/60 font-semibold">
+            Delivery day
+          </label>
           <div className="mt-2 grid grid-cols-4 gap-2">
-            {DAYS.map(d => (
+            {DAYS.map((d) => (
               <button
                 key={d}
                 onClick={() => setDay(d)}
                 className={clsx(
                   "rounded-xl py-2 text-sm font-semibold transition-all",
-                  d === day ? "bg-accent text-cream" : "bg-cinnamon/5 text-cocoa hover:bg-cinnamon/10"
+                  d === day
+                    ? "bg-accent text-cream"
+                    : "bg-cinnamon/5 text-cocoa hover:bg-cinnamon/10",
                 )}
               >
                 {d}

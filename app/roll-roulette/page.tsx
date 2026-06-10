@@ -6,7 +6,7 @@ export default function RoulettePage() {
     <PageShell
       eyebrow="Roll Roulette"
       title="Spin for the glaze of the week."
-      subtitle="Whatever lands, we bake. Free with any Medium or Large."
+      subtitle="Whatever lands, we bake. Free with any Classic box."
     >
       <RouletteWheel />
     </PageShell>

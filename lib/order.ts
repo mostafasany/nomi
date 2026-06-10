@@ -1,7 +1,15 @@
+import { GlazeLevel } from "@/lib/glazes";
 import { CONTACT, SITE, fmt } from "@/lib/site";
 import { Size } from "@/lib/sizes";
-import { GlazeLevel } from "@/lib/glazes";
-import { ToppingSelection, toppingsPrice, toppingsLabel, toppingsCount } from "@/lib/toppings";
+import {
+  Topping,
+  ToppingSelection,
+  addonsPrice,
+  saucesPrice,
+  toppingsCount,
+  toppingsLabel,
+  toppingsPrice,
+} from "@/lib/toppings";
 
 export type Customer = {
   name: string;
@@ -10,19 +18,50 @@ export type Customer = {
   notes?: string;
 };
 
-export type CartLine = {
+export type RollCartLine = {
   id: string;
+  type: "roll";
   size: Size;
   toppings: ToppingSelection;
   qty: number;
 };
 
+export type AddonCartLine = {
+  id: string;
+  type: "addon";
+  addonKind: "nuts" | "extraSauces";
+  topping: Topping;
+  qty: number;
+};
+
+export type CartLine = RollCartLine | AddonCartLine;
+
+export function isRollLine(line: CartLine): line is RollCartLine {
+  return line.type === "roll";
+}
+
+export function isAddonLine(line: CartLine): line is AddonCartLine {
+  return line.type === "addon";
+}
+
 export function lineUnitPrice(line: CartLine): number {
-  return line.size.price + toppingsPrice(line.toppings);
+  if (isAddonLine(line)) return line.topping.price;
+  return line.size.price + saucesPrice(line.toppings);
 }
 
 export function lineSubtotal(line: CartLine): number {
-  return lineUnitPrice(line) * line.qty;
+  if (isAddonLine(line)) return lineUnitPrice(line) * line.qty;
+  return lineUnitPrice(line) * line.qty + addonsPrice(line.toppings);
+}
+
+function nutsLabel(toppings: ToppingSelection): string {
+  return toppings.nuts.map((n) => `${n.qty}x ${n.topping.name}`).join(", ");
+}
+
+function extraSaucesLabel(toppings: ToppingSelection): string {
+  return (toppings.extraSauces ?? [])
+    .map((sauce) => `${sauce.qty}x ${sauce.topping.name}`)
+    .join(", ");
 }
 
 export type BoxOrder = {
@@ -57,15 +96,24 @@ export type SubOrder = {
 export type Order = BoxOrder | GiftOrder | SubOrder;
 
 function formatLine(line: CartLine): string {
+  if (isAddonLine(line)) {
+    return `• ${line.qty}× Extras box: ${line.topping.name} — ${fmt(lineSubtotal(line))}`;
+  }
+
   const lines = [
     `• ${line.qty}× ${line.size.name} — ${fmt(lineSubtotal(line))}`,
   ];
   if (toppingsCount(line.toppings) > 0) {
     if (line.toppings.sauces.length > 0) {
-      lines.push(`   Sauce: ${line.toppings.sauces.map(s => s.name).join(", ")}`);
+      lines.push(
+        `   Sauce: ${line.toppings.sauces.map((s) => s.name).join(", ")}`,
+      );
     }
     if (line.toppings.nuts.length > 0) {
-      lines.push(`   Nuts: ${line.toppings.nuts.map(n => n.name).join(", ")}`);
+      lines.push(`   Nuts: ${nutsLabel(line.toppings)}`);
+    }
+    if ((line.toppings.extraSauces ?? []).length > 0) {
+      lines.push(`   Extra sauces: ${extraSaucesLabel(line.toppings)}`);
     }
   }
   return lines.join("\n");
@@ -79,11 +127,13 @@ export function buildMessage(order: Order): string {
     `*Customer*`,
     `Name: ${order.customer.name}`,
     `Phone: ${order.customer.phone}`,
-    `Address: ${order.customer.address}`,
+    order.customer.address.trim() ? `Address: ${order.customer.address}` : null,
     order.customer.notes ? `Notes: ${order.customer.notes}` : null,
     ``,
     `_${CONTACT.deliveryNote}_`,
-  ].filter(Boolean).join("\n");
+  ]
+    .filter(Boolean)
+    .join("\n");
 
   if (order.kind === "box") {
     const body = [
@@ -110,10 +160,15 @@ export function buildMessage(order: Order): string {
       `Size: ${order.size.name} (${fmt(order.size.price + toppingsPrice(order.toppings))})`,
     ];
     if (order.toppings.sauces.length > 0) {
-      lines.push(`Sauce: ${order.toppings.sauces.map(s => s.name).join(", ")}`);
+      lines.push(
+        `Sauce: ${order.toppings.sauces.map((s) => s.name).join(", ")}`,
+      );
     }
     if (order.toppings.nuts.length > 0) {
-      lines.push(`Nuts: ${order.toppings.nuts.map(n => n.name).join(", ")}`);
+      lines.push(`Nuts: ${nutsLabel(order.toppings)}`);
+    }
+    if ((order.toppings.extraSauces ?? []).length > 0) {
+      lines.push(`Extra sauces: ${extraSaucesLabel(order.toppings)}`);
     }
     lines.push(`For: ${order.recipient}`);
     lines.push(`Note: ${order.note}`);
@@ -128,10 +183,13 @@ export function buildMessage(order: Order): string {
     `${order.qtyPerWeek}× ${order.size.name} every ${order.day}`,
   ];
   if (order.toppings.sauces.length > 0) {
-    lines.push(`Sauce: ${order.toppings.sauces.map(s => s.name).join(", ")}`);
+    lines.push(`Sauce: ${order.toppings.sauces.map((s) => s.name).join(", ")}`);
   }
   if (order.toppings.nuts.length > 0) {
-    lines.push(`Nuts: ${order.toppings.nuts.map(n => n.name).join(", ")}`);
+    lines.push(`Nuts: ${nutsLabel(order.toppings)}`);
+  }
+  if ((order.toppings.extraSauces ?? []).length > 0) {
+    lines.push(`Extra sauces: ${extraSaucesLabel(order.toppings)}`);
   }
   lines.push(`Weekly: ${fmt(order.weeklyTotal)}`);
   return `${lines.join("\n")}\n${customer}`;
@@ -140,25 +198,14 @@ export function buildMessage(order: Order): string {
 /** Build a wa.me URL with the message pre-filled. */
 export function whatsappUrl(order: Order): string {
   const phone = CONTACT.whatsappNumber.replace(/[^\d]/g, "");
-  const text  = encodeURIComponent(buildMessage(order));
+  const text = encodeURIComponent(buildMessage(order));
   return `https://wa.me/${phone}?text=${text}`;
 }
 
 export type FieldErrors = Partial<Record<keyof Customer, string>>;
 
-export function validateCustomer(c: Customer): FieldErrors {
-  const errs: FieldErrors = {};
-  if (c.name.trim().length < 2) {
-    errs.name = "Please enter your name.";
-  }
-  const digits = c.phone.replace(/\D/g, "");
-  if (digits.length < 6) {
-    errs.phone = "Enter a valid phone number.";
-  }
-  if (c.address.trim().length < 5) {
-    errs.address = "Please enter a delivery address.";
-  }
-  return errs;
+export function validateCustomer(_c: Customer): FieldErrors {
+  return {};
 }
 
 export function isCustomerValid(c: Customer): boolean {

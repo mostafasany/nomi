@@ -5,8 +5,8 @@ export default function MenuPage() {
   return (
     <PageShell
       eyebrow="The Lineup"
-      title="Three sizes. Pick your fight."
-      subtitle="Same dough. Same eleven turns. Different commitment levels."
+      title="Classic rolls and bite boxes."
+      subtitle="Same dough. Same eleven turns. Pick your toppings."
     >
       <SizeLineup />
     </PageShell>

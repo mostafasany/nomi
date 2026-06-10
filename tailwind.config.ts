@@ -9,7 +9,7 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // brand palette — sampled from the Nömi's logo
+        // brand palette — sampled from the NömiRoll logo
         cream:    "#F2E8D5", // logo wordmark cream
         caramel:  "#C99565", // logo background tan
         cinnamon: "#7A3E20",
