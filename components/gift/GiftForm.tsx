@@ -13,7 +13,7 @@ import { fmt } from "@/lib/site";
 import { DEFAULT_SIZE_ID, SIZES, SizeId, getSize } from "@/lib/sizes";
 import {
     ToppingSelection,
-    noToppings,
+    defaultToppings,
     toppingsCount,
     toppingsLabel,
     toppingsPrice,
@@ -22,7 +22,9 @@ import { useState } from "react";
 
 export function GiftForm() {
   const [sizeId, setSizeId] = useState<SizeId>(DEFAULT_SIZE_ID);
-  const [toppings, setToppings] = useState<ToppingSelection>(noToppings);
+  const [toppings, setToppings] = useState<ToppingSelection>(
+    defaultToppings(DEFAULT_SIZE_ID),
+  );
   const [recipient, setRecipient] = useState("");
   const [note, setNote] = useState("");
   const [customer, setCustomer] = useState(emptyCustomer);
@@ -30,6 +32,11 @@ export function GiftForm() {
 
   const size = getSize(sizeId);
   const giftPrice = size.price + toppingsPrice(toppings);
+
+  const handleSizeChange = (nextSizeId: SizeId) => {
+    setSizeId(nextSizeId);
+    setToppings(defaultToppings(nextSizeId));
+  };
 
   const order: GiftOrder = {
     kind: "gift",
@@ -57,7 +64,7 @@ export function GiftForm() {
           {SIZES.map((s) => (
             <button
               key={s.id}
-              onClick={() => setSizeId(s.id)}
+              onClick={() => handleSizeChange(s.id)}
               className={clsx(
                 "rounded-2xl p-3 border-2 text-left transition-all",
                 sizeId === s.id
