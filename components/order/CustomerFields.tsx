@@ -12,23 +12,28 @@ type Props = {
   showAll?: boolean;
 };
 
-type FieldKey = "name" | "phone" | "address";
+type FieldKey = "pickupDate" | "pickupTime";
 
 const LABELS: Record<FieldKey, string> = {
-  name: "Name",
-  phone: "Phone",
-  address: "Delivery address",
+  pickupDate: "Pickup date",
+  pickupTime: "Pickup time",
 };
 
 const PLACEHOLDERS: Record<FieldKey, string> = {
-  name: "Jane Doe",
-  phone: "+1 555 123 4567",
-  address: "Street, apt, city",
+  pickupDate: "",
+  pickupTime: "",
 };
+
+/** Earliest selectable pickup date (today, local time) as yyyy-mm-dd. */
+function todayISO(): string {
+  const now = new Date();
+  const tz = now.getTimezoneOffset() * 60000;
+  return new Date(now.getTime() - tz).toISOString().slice(0, 10);
+}
 
 export function CustomerFields({ value, onChange, errors = {}, showAll }: Props) {
   const [touched, setTouched] = useState<Record<FieldKey, boolean>>({
-    name: false, phone: false, address: false,
+    pickupDate: false, pickupTime: false,
   });
 
   const set = <K extends keyof Customer>(k: K, v: Customer[K]) =>
@@ -44,28 +49,23 @@ export function CustomerFields({ value, onChange, errors = {}, showAll }: Props)
     <div className="space-y-3">
       <div className="grid grid-cols-2 gap-3">
         <Field
-          k="name"
-          value={value.name}
-          onChange={v => set("name", v)}
-          onBlur={() => markTouched("name")}
-          error={errorFor("name")}
+          k="pickupDate"
+          type="date"
+          min={todayISO()}
+          value={value.pickupDate}
+          onChange={v => set("pickupDate", v)}
+          onBlur={() => markTouched("pickupDate")}
+          error={errorFor("pickupDate")}
         />
         <Field
-          k="phone"
-          type="tel"
-          value={value.phone}
-          onChange={v => set("phone", v)}
-          onBlur={() => markTouched("phone")}
-          error={errorFor("phone")}
+          k="pickupTime"
+          type="time"
+          value={value.pickupTime}
+          onChange={v => set("pickupTime", v)}
+          onBlur={() => markTouched("pickupTime")}
+          error={errorFor("pickupTime")}
         />
       </div>
-      <Field
-        k="address"
-        value={value.address}
-        onChange={v => set("address", v)}
-        onBlur={() => markTouched("address")}
-        error={errorFor("address")}
-      />
       <label className="block">
         <span className="text-xs uppercase tracking-widest text-cocoa/60 font-semibold">
           Notes (optional)
@@ -83,7 +83,7 @@ export function CustomerFields({ value, onChange, errors = {}, showAll }: Props)
 }
 
 function Field({
-  k, value, onChange, onBlur, error, type = "text",
+  k, value, onChange, onBlur, error, type = "text", min,
 }: {
   k: FieldKey;
   value: string;
@@ -91,6 +91,7 @@ function Field({
   onBlur: () => void;
   error: string | null | undefined;
   type?: string;
+  min?: string;
 }) {
   const invalid = Boolean(error);
   return (
@@ -100,6 +101,7 @@ function Field({
       </span>
       <input
         type={type}
+        min={min}
         value={value}
         onChange={e => onChange(e.target.value)}
         onBlur={onBlur}
@@ -121,4 +123,8 @@ function Field({
   );
 }
 
-export const emptyCustomer: Customer = { name: "", phone: "", address: "", notes: "" };
+export const emptyCustomer: Customer = {
+  pickupDate: "",
+  pickupTime: "",
+  notes: "",
+};

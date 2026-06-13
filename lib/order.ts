@@ -12,11 +12,21 @@ import {
 } from "@/lib/toppings";
 
 export type Customer = {
-  name: string;
-  phone: string;
-  address: string;
+  pickupDate: string; // ISO yyyy-mm-dd from <input type="date">
+  pickupTime: string; // HH:mm from <input type="time">
   notes?: string;
 };
+
+/** Format an ISO date + 24h time into a readable pickup string for the WhatsApp message. */
+export function formatPickup(dateISO: string, time: string): string {
+  if (!dateISO) return "";
+  const [y, m, d] = dateISO.split("-").map(Number);
+  const dateLabel = new Date(y, (m ?? 1) - 1, d ?? 1).toLocaleDateString(
+    undefined,
+    { weekday: "short", day: "numeric", month: "short", year: "numeric" },
+  );
+  return time ? `${dateLabel} at ${time}` : dateLabel;
+}
 
 export type RollCartLine = {
   id: string;
@@ -124,10 +134,9 @@ export function buildMessage(order: Order): string {
   const header = `*New ${SITE.name} Order*`;
   const customer = [
     ``,
-    `*Customer*`,
-    `Name: ${order.customer.name}`,
-    `Phone: ${order.customer.phone}`,
-    order.customer.address.trim() ? `Address: ${order.customer.address}` : null,
+    order.customer.pickupDate
+      ? `Pickup: ${formatPickup(order.customer.pickupDate, order.customer.pickupTime)}`
+      : null,
     order.customer.notes ? `Notes: ${order.customer.notes}` : null,
     ``,
     `_${CONTACT.deliveryNote}_`,
@@ -204,8 +213,11 @@ export function whatsappUrl(order: Order): string {
 
 export type FieldErrors = Partial<Record<keyof Customer, string>>;
 
-export function validateCustomer(_c: Customer): FieldErrors {
-  return {};
+export function validateCustomer(c: Customer): FieldErrors {
+  const errs: FieldErrors = {};
+  if (!c.pickupDate) errs.pickupDate = "Choose a pickup date.";
+  if (!c.pickupTime) errs.pickupTime = "Choose a pickup time.";
+  return errs;
 }
 
 export function isCustomerValid(c: Customer): boolean {

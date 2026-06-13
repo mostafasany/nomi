@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "NömiRoll — Bakery & Cinnamon Rolls",
+  title: "Nömi — Rolls & Bakery",
   description:
     "Classic cinnamon rolls and bite boxes with custom toppings. One Nomi at a time.",
 };
