@@ -5,8 +5,8 @@ export function Footer() {
     <footer className="mt-24 border-t border-cinnamon/10 bg-cream">
       <div className="mx-auto max-w-7xl px-6 py-12 grid grid-cols-2 md:grid-cols-4 gap-8">
         <div>
-          <p className="font-display text-2xl font-extrabold">NömiRoll</p>
-          <p className="text-xs uppercase tracking-widest text-cocoa/60 mt-1">Bakery &amp; Cinnamon Rolls</p>
+          <p className="font-display text-2xl font-extrabold">Nömi</p>
+          <p className="text-xs uppercase tracking-widest text-cocoa/60 mt-1">Rolls &amp; Bakery</p>
           <p className="text-sm text-cocoa/70 mt-3">Roll with it.</p>
         </div>
         <div>
@@ -35,7 +35,7 @@ export function Footer() {
         </div>
       </div>
       <div className="border-t border-cinnamon/10 py-6 text-center text-xs text-cocoa/60">
-        © {new Date().getFullYear()} NömiRoll. Baked with butter and obsession.
+        © {new Date().getFullYear()} Nömi. Baked with butter and obsession.
       </div>
     </footer>
   );

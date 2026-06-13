@@ -1,7 +1,7 @@
 "use client";
 
 import { NomiMeter } from "@/components/nomimeter/NomiMeter";
-import { emptyCustomer } from "@/components/order/CustomerFields";
+import { CustomerFields, emptyCustomer } from "@/components/order/CustomerFields";
 import { WhatsAppButton } from "@/components/order/WhatsAppButton";
 import { Card } from "@/components/ui/Card";
 import { GLAZE_LEVELS } from "@/lib/glazes";
@@ -13,7 +13,7 @@ import {
   lineSubtotal,
   validateCustomer,
 } from "@/lib/order";
-import { fmt, ORDER_CFG } from "@/lib/site";
+import { CONTACT, fmt, ORDER_CFG } from "@/lib/site";
 import { getSize, minQtyForSize, SizeId } from "@/lib/sizes";
 import { noToppings, Topping, ToppingSelection } from "@/lib/toppings";
 import { useMemo, useRef, useState } from "react";
@@ -140,6 +140,25 @@ export function BoxBuilder() {
             <RollConfigurator onAdd={addLine} onAddAddon={addAddonLine} />
           </div>
         </Card>
+
+        {lines.length > 0 && (
+          <Card>
+            <h3 className="font-display text-2xl font-bold text-cinnamon">
+              Pickup &amp; details
+            </h3>
+            <p className="text-sm text-cocoa/70 mt-1">
+              Choose when you&apos;ll pick up. {CONTACT.deliveryNote}
+            </p>
+            <div className="mt-4">
+              <CustomerFields
+                value={customer}
+                onChange={setCustomer}
+                errors={fieldErrors}
+                showAll={attempted}
+              />
+            </div>
+          </Card>
+        )}
       </div>
 
       <aside className="lg:sticky lg:top-24 h-fit">

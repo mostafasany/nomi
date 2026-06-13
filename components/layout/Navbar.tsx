@@ -23,7 +23,7 @@ export function Navbar() {
             className="group-hover:rotate-45 transition-transform duration-500"
           />
           <span className="font-display text-2xl font-extrabold tracking-tight">
-            NömiRoll
+            Nömi
           </span>
         </Link>
         <ul className="hidden md:flex items-center gap-6 text-sm font-medium">
