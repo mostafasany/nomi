@@ -16,7 +16,7 @@ import {
   NUTS,
   Topping,
   ToppingSelection,
-  noToppings,
+  defaultToppings,
   saucesPrice,
 } from "@/lib/toppings";
 import { useState } from "react";
@@ -28,7 +28,9 @@ type Props = {
 
 export function RollConfigurator({ onAdd, onAddAddon }: Props) {
   const [sizeId, setSizeId] = useState<SizeId>(DEFAULT_SIZE_ID);
-  const [toppings, setToppings] = useState<ToppingSelection>(noToppings);
+  const [toppings, setToppings] = useState<ToppingSelection>(
+    defaultToppings(DEFAULT_SIZE_ID),
+  );
   const [qty, setQty] = useState(minQtyForSize(getSize(DEFAULT_SIZE_ID)));
 
   const size = getSize(sizeId);
@@ -38,12 +40,13 @@ export function RollConfigurator({ onAdd, onAddAddon }: Props) {
 
   const handleAdd = () => {
     onAdd(sizeId, toppings, qty);
-    setToppings(noToppings);
+    setToppings(defaultToppings(sizeId));
     setQty(minQtyForSize(getSize(sizeId)));
   };
 
   const handleSizeChange = (nextSizeId: SizeId) => {
     setSizeId(nextSizeId);
+    setToppings(defaultToppings(nextSizeId));
     setQty(minQtyForSize(getSize(nextSizeId)));
   };
 

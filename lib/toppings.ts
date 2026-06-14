@@ -39,6 +39,22 @@ export const noToppings: ToppingSelection = {
   extraSauces: [],
 };
 
+/** The free "Original (Classic Glaze)" sauce, if configured. */
+export const ORIGINAL_SAUCE: Topping | undefined = SAUCES.find(
+  (s) => s.id === "original",
+);
+
+/**
+ * Starting toppings for a freshly-picked size.
+ * Classic rolls come with the Original glaze pre-selected.
+ */
+export function defaultToppings(sizeId: string): ToppingSelection {
+  if (sizeId === "classic" && ORIGINAL_SAUCE) {
+    return { sauces: [ORIGINAL_SAUCE], nuts: [], extraSauces: [] };
+  }
+  return { sauces: [], nuts: [], extraSauces: [] };
+}
+
 export function saucesPrice(t: ToppingSelection): number {
   return t.sauces.reduce((sum, x) => sum + x.price, 0);
 }

@@ -20,7 +20,7 @@ import {
 import {
   ToppingSelection,
   addonsPrice,
-  noToppings,
+  defaultToppings,
   saucesPrice,
 } from "@/lib/toppings";
 import { useState } from "react";
@@ -29,7 +29,9 @@ const DAYS = SUBSCRIPTION.days;
 
 export function SubscribeForm() {
   const [sizeId, setSizeId] = useState<SizeId>(DEFAULT_SIZE_ID);
-  const [toppings, setToppings] = useState<ToppingSelection>(noToppings);
+  const [toppings, setToppings] = useState<ToppingSelection>(
+    defaultToppings(DEFAULT_SIZE_ID),
+  );
   const [qty, setQty] = useState(minQtyForSize(getSize(DEFAULT_SIZE_ID)));
   const [day, setDay] = useState<string>("Sat");
   const [customer, setCustomer] = useState(emptyCustomer);
@@ -42,6 +44,7 @@ export function SubscribeForm() {
 
   const handleSizeChange = (nextSizeId: SizeId) => {
     setSizeId(nextSizeId);
+    setToppings(defaultToppings(nextSizeId));
     setQty(minQtyForSize(getSize(nextSizeId)));
   };
 
