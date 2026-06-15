@@ -137,6 +137,7 @@ export function buildMessage(order: Order): string {
     order.customer.pickupDate
       ? `Pickup: ${formatPickup(order.customer.pickupDate, order.customer.pickupTime)}`
       : null,
+    CONTACT.pickupAddress ? `Pickup at: ${CONTACT.pickupAddress}` : null,
     order.customer.notes ? `Notes: ${order.customer.notes}` : null,
     ``,
     `_${CONTACT.deliveryNote}_`,

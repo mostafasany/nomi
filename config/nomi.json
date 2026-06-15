@@ -10,7 +10,8 @@
     "whatsappNumber": "+201020229932",
     "instagram": "https://www.instagram.com/Nömis.bakery/",
     "tiktok": "https://tiktok.com/",
-    "deliveryNote": "Cash on delivery."
+    "deliveryNote": "Cash on delivery.",
+    "pickupAddress": "Alexanderplatz, Berlin"
   },
   "order": {
     "minRolls": 4,

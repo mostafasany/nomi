@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Customer, FieldErrors } from "@/lib/order";
+import { CONTACT } from "@/lib/site";
 import { clsx } from "@/lib/clsx";
 
 type Props = {
@@ -47,6 +48,19 @@ export function CustomerFields({ value, onChange, errors = {}, showAll }: Props)
 
   return (
     <div className="space-y-3">
+      {CONTACT.pickupAddress && (
+        <div className="flex items-start gap-2 rounded-xl bg-accent/10 border border-accent/20 px-3 py-2.5">
+          <span aria-hidden className="text-base leading-none mt-0.5">📍</span>
+          <div>
+            <p className="text-xs uppercase tracking-widest text-cocoa/60 font-semibold">
+              Pickup location
+            </p>
+            <p className="text-sm font-semibold text-cinnamon">
+              {CONTACT.pickupAddress}
+            </p>
+          </div>
+        </div>
+      )}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <Field
           k="pickupDate"
