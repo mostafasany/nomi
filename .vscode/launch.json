@@ -12,7 +12,8 @@
       "serverReadyAction": {
         "pattern": "- Local:\\s+(https?://\\S+)",
         "uriFormat": "%s",
-        "action": "debugWithChrome"
+        "action": "debugWithChrome",
+        "userDataDir": "${workspaceFolder}/.vscode/chrome-debug-profile"
       }
     },
     {
@@ -20,7 +21,8 @@
       "type": "chrome",
       "request": "launch",
       "url": "http://localhost:4004",
-      "webRoot": "${workspaceFolder}"
+      "webRoot": "${workspaceFolder}",
+      "userDataDir": "${workspaceFolder}/.vscode/chrome-debug-profile"
     },
     {
       "name": "Next.js: debug full stack",
@@ -33,7 +35,8 @@
         "pattern": "- Local:\\s+(https?://\\S+)",
         "uriFormat": "%s",
         "action": "debugWithChrome",
-        "webRoot": "${workspaceFolder}"
+        "webRoot": "${workspaceFolder}",
+        "userDataDir": "${workspaceFolder}/.vscode/chrome-debug-profile"
       }
     }
   ],
