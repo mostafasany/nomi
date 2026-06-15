@@ -122,7 +122,7 @@ function Field({
         placeholder={PLACEHOLDERS[k]}
         aria-invalid={invalid || undefined}
         className={clsx(
-          "mt-1.5 w-full rounded-xl border bg-cream px-4 py-2.5 text-sm focus:outline-none focus:ring-2",
+          "mt-1.5 block w-full min-w-0 max-w-full box-border appearance-none rounded-xl border bg-cream px-4 py-2.5 text-sm text-left focus:outline-none focus:ring-2",
           invalid
             ? "border-red-400 focus:ring-red-300"
             : "border-cinnamon/20 focus:ring-accent"
