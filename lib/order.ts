@@ -1,5 +1,5 @@
 import { GlazeLevel } from "@/lib/glazes";
-import { CONTACT, SITE, fmt } from "@/lib/site";
+import { CONTACT, DELIVERY, SITE, fmt } from "@/lib/site";
 import { Size } from "@/lib/sizes";
 import {
   Topping,
@@ -138,6 +138,7 @@ export function buildMessage(order: Order): string {
       ? `Pickup: ${formatPickup(order.customer.pickupDate, order.customer.pickupTime)}`
       : null,
     CONTACT.pickupAddress ? `Pickup at: ${CONTACT.pickupAddress}` : null,
+    DELIVERY.availableToday ? null : `Note: ${DELIVERY.offMessage}`,
     order.customer.notes ? `Notes: ${order.customer.notes}` : null,
     ``,
     `_${CONTACT.deliveryNote}_`,

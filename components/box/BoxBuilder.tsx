@@ -13,7 +13,8 @@ import {
   lineSubtotal,
   validateCustomer,
 } from "@/lib/order";
-import { CONTACT, fmt, ORDER_CFG } from "@/lib/site";
+import { clsx } from "@/lib/clsx";
+import { CONTACT, DELIVERY, fmt, ORDER_CFG } from "@/lib/site";
 import { getSize, minQtyForSize, SizeId } from "@/lib/sizes";
 import { noToppings, Topping, ToppingSelection } from "@/lib/toppings";
 import { useMemo, useRef, useState } from "react";
@@ -171,6 +172,18 @@ export function BoxBuilder() {
               ? "Empty"
               : `${totalItems} ${totalItems === 1 ? "item" : "items"}`}
           </h3>
+
+          <div
+            className={clsx(
+              "mt-3 flex items-center gap-2 rounded-xl border px-3 py-2 text-sm font-semibold",
+              DELIVERY.availableToday
+                ? "border-green-200 bg-green-50 text-green-800"
+                : "border-amber-200 bg-amber-50 text-amber-800",
+            )}
+          >
+            <span aria-hidden>{DELIVERY.availableToday ? "🛵" : "🏪"}</span>
+            {DELIVERY.availableToday ? DELIVERY.onMessage : DELIVERY.offMessage}
+          </div>
 
           <div
             className="mt-4 rounded-2xl border-2 border-dashed border-cinnamon/30 p-5 transition-transform"
