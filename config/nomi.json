@@ -19,6 +19,11 @@
     "leadTimeHours": 24,
     "freshnessHours": 48
   },
+  "delivery": {
+    "availableToday": true,
+    "onMessage": "Delivery is available today.",
+    "offMessage": "Delivery is off today — pickup only."
+  },
   "sizes": [
     {
       "id": "classic",
@@ -36,14 +41,14 @@
     },
     {
       "id": "bites",
-      "name": "Bites (12 Pieces)",
+      "name": "Bites (10 Pieces)",
       "tagline": "The Share Pack",
-      "description": "Twelve bite-sized Nömi pieces for sharing, snacking, or pretending to share.",
-      "price": 12,
+      "description": "Ten bite-sized Nömi pieces for sharing, snacking, or pretending to share.",
+      "price": 10,
       "minQty": 1,
       "diameterCm": 4,
-      "weightG": 420,
-      "compareTo": "A dozen mini swirls.",
+      "weightG": 350,
+      "compareTo": "Ten mini swirls.",
       "color": "bg-accent",
       "ring": "ring-accent",
       "emoji": "·"
