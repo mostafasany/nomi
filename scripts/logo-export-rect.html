@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<style>
+  @font-face {
+    font-family: "Fraunces";
+    src: url("https://fonts.gstatic.com/s/fraunces/v31/6NUh8FyLNQOQZAnv9bYEvDiIdE9Ea92uemAk_WBq8U_9v0c2Wa0K7iN7hzFUPJH58nib1603gg7S2nfgRYIctxqjDvTShUtWNg.woff2") format("woff2");
+    font-weight: 100 900;
+  }
+  html, body { margin: 0; padding: 0; background: transparent; }
+  svg { display: block; }
+</style>
+</head>
+<body>
+<!-- 1200 x 630 landscape rectangle (works for IG landscape posts, banners, link previews) -->
+<svg viewBox="0 0 1200 630" width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="630" fill="#C99565" />
+
+  <!-- swirl mark, centered top -->
+  <g transform="translate(600, 215)" stroke="#F2E8D5" stroke-width="2.4" fill="none" stroke-linecap="round">
+    <path d="M -8 0 a 8 8 0 1 1 16 0 a 8 8 0 1 1 -16 0" />
+    <path d="M -17 -1.5 a 17 17 0 1 1 30 8" />
+    <circle r="2.6" fill="#F2E8D5" stroke="none" />
+  </g>
+
+  <!-- wordmark -->
+  <text x="600" y="380" text-anchor="middle"
+        font-family="Fraunces, Georgia, serif" font-weight="800"
+        font-size="150" letter-spacing="-2" fill="#F2E8D5">N&#xD6;MI</text>
+
+  <!-- divider -->
+  <line x1="470" y1="425" x2="730" y2="425" stroke="#F2E8D5" stroke-width="1.4" opacity="0.85" />
+
+  <!-- tagline -->
+  <text x="600" y="468" text-anchor="middle"
+        font-family="Fraunces, Georgia, serif" font-size="22"
+        letter-spacing="7" fill="#F2E8D5">ROLLS &amp; BAKERY</text>
+
+  <!-- dot row -->
+  <g fill="#F2E8D5">
+    <circle cx="552" cy="510" r="4" />
+    <circle cx="576" cy="510" r="4" />
+    <circle cx="600" cy="510" r="4" />
+    <circle cx="624" cy="510" r="4" />
+    <circle cx="648" cy="510" r="4" />
+  </g>
+</svg>
+</body>
+</html>
