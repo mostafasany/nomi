@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { CONTACT } from "@/lib/site";
 
 export function Footer() {
   return (
@@ -29,8 +30,16 @@ export function Footer() {
           <p className="text-xs uppercase tracking-wider text-cocoa/60">Follow</p>
           <ul className="mt-3 space-y-2 text-sm">
             <li><Link href="/moments" className="hover:text-accent">#NomiMoment</Link></li>
-            <li><a href="#" className="hover:text-accent">Instagram</a></li>
-            <li><a href="#" className="hover:text-accent">TikTok</a></li>
+            <li>
+              <a
+                href={CONTACT.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-accent"
+              >
+                Instagram
+              </a>
+            </li>
           </ul>
         </div>
       </div>

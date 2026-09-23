@@ -3,15 +3,14 @@
     "name": "Nömi",
     "tagline": "Bakery & Cinnamon Rolls",
     "shortName": "Nömi",
-    "currency": "€",
-    "currencyCode": "EUR"
+    "currency": "EGP ",
+    "currencyCode": "EGP"
   },
   "contact": {
     "whatsappNumber": "+201020229932",
-    "instagram": "https://www.instagram.com/Nömis.bakery/",
-    "tiktok": "https://tiktok.com/",
+    "instagram": "https://www.instagram.com/nomi.roll/",
     "deliveryNote": "Cash on delivery.",
-    "pickupAddress": "Alexanderplatz, Berlin"
+    "pickupAddress": "Egypt"
   },
   "order": {
     "minRolls": 4,
@@ -22,7 +21,35 @@
   "delivery": {
     "availableToday": true,
     "onMessage": "Delivery is available today.",
-    "offMessage": "Delivery is off today — pickup only."
+    "offMessage": "Delivery is off today — pickup only.",
+    "checkNote": "WhatsApp us to check if we deliver to your address."
+  },
+  "gallery": {
+    "eyebrow": "Fresh from the oven",
+    "title": "Look at these.",
+    "autoplaySeconds": 5,
+    "items": [
+      {
+        "src": "/gallery/caramel-pecan-roll.png",
+        "alt": "Close-up of a Nömi classic cinnamon roll with caramel sauce and pecans",
+        "caption": "The Classic — caramel sauce and pecans."
+      },
+      {
+        "src": "/gallery/rolls-tray.png",
+        "alt": "Cinnamon rolls with caramel drizzle and pecans",
+        "caption": "Caramel & pecan, straight from the tray."
+      },
+      {
+        "src": "/gallery/box-open.png",
+        "alt": "Nömi box of cinnamon rolls with a cup of pecans",
+        "caption": "Boxed, with extra pecans on the side."
+      },
+      {
+        "src": "/gallery/four-flavours.jpg",
+        "alt": "Four cinnamon rolls: pistachio, classic, chocolate and Lotus",
+        "caption": "Pistachio, classic, chocolate, Lotus."
+      }
+    ]
   },
   "sizes": [
     {
@@ -30,7 +57,7 @@
       "name": "Classic",
       "tagline": "The Signature",
       "description": "The Nömi standard. Soft, swirled, glazed with cream cheese, and ready for you.",
-      "price": 3.5,
+      "price": 120,
       "minQty": 1,
       "diameterCm": 9,
       "weightG": 110,
@@ -44,7 +71,7 @@
       "name": "Bites (10 Pieces)",
       "tagline": "The Share Pack",
       "description": "Ten bite-sized Nömi pieces for sharing, snacking, or pretending to share.",
-      "price": 10,
+      "price": 220,
       "minQty": 1,
       "diameterCm": 4,
       "weightG": 350,
@@ -59,40 +86,85 @@
       {
         "id": "original",
         "name": "Original (Classic Glaze)",
-        "price": 0.0,
+        "price": 0,
         "emoji": "✨"
       },
-      { "id": "caramel", "name": "Caramel", "price": 0.5, "emoji": "🍯" },
-      { "id": "chocolate", "name": "Chocolate", "price": 0.5, "emoji": "🍫" },
-      { "id": "bueno", "name": "Bueno", "price": 0.5, "emoji": "🍫" },
-      { "id": "lotus", "name": "Lotus", "price": 0.5, "emoji": "🍪" },
+      {
+        "id": "caramel",
+        "name": "Caramel",
+        "price": 20,
+        "emoji": "🍯"
+      },
+      {
+        "id": "chocolate",
+        "name": "Chocolate",
+        "price": 20,
+        "emoji": "🍫"
+      },
+      {
+        "id": "bueno",
+        "name": "Bueno",
+        "price": 20,
+        "emoji": "🍫"
+      },
+      {
+        "id": "lotus",
+        "name": "Lotus",
+        "price": 20,
+        "emoji": "🍪"
+      },
       {
         "id": "pistachio-sauce",
         "name": "Pistachio Cream",
-        "price": 0.5,
+        "price": 20,
         "emoji": "🫒"
       }
     ]
   },
   "extras": {
     "sauces": [
-      { "id": "caramel", "name": "Caramel", "price": 0.5, "emoji": "🍯" },
-      { "id": "chocolate", "name": "Chocolate", "price": 0.5, "emoji": "🍫" },
-      { "id": "bueno", "name": "Bueno", "price": 0.5, "emoji": "🍫" },
-      { "id": "lotus", "name": "Lotus", "price": 0.5, "emoji": "🍪" },
+      {
+        "id": "caramel",
+        "name": "Caramel",
+        "price": 25,
+        "emoji": "🍯"
+      },
+      {
+        "id": "chocolate",
+        "name": "Chocolate",
+        "price": 25,
+        "emoji": "🍫"
+      },
+      {
+        "id": "bueno",
+        "name": "Bueno",
+        "price": 25,
+        "emoji": "🍫"
+      },
+      {
+        "id": "lotus",
+        "name": "Lotus",
+        "price": 25,
+        "emoji": "🍪"
+      },
       {
         "id": "pistachio-sauce",
         "name": "Pistachio Cream",
-        "price": 0.5,
+        "price": 25,
         "emoji": "🫒"
       }
     ],
     "nuts": [
-      { "id": "pecan", "name": "Pecan Nuts", "price": 1.0, "emoji": "🌰" },
+      {
+        "id": "pecan",
+        "name": "Pecan Nuts",
+        "price": 35,
+        "emoji": "🌰"
+      },
       {
         "id": "pistachio",
         "name": "Pistachio Nuts",
-        "price": 1.0,
+        "price": 35,
         "emoji": "🫒"
       }
     ]
@@ -114,7 +186,7 @@
       {
         "id": "drown",
         "name": "Nömi Drown",
-        "surcharge": 1.5,
+        "surcharge": 25,
         "description": "Bring a fork. And a bib."
       }
     ],
