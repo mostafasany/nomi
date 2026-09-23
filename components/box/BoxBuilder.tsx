@@ -184,6 +184,9 @@ export function BoxBuilder() {
             <span aria-hidden>{DELIVERY.availableToday ? "🛵" : "🏪"}</span>
             {DELIVERY.availableToday ? DELIVERY.onMessage : DELIVERY.offMessage}
           </div>
+          {DELIVERY.checkNote && (
+            <p className="mt-2 text-xs text-cocoa/70">{DELIVERY.checkNote}</p>
+          )}
 
           <div
             className="mt-4 rounded-2xl border-2 border-dashed border-cinnamon/30 p-5 transition-transform"
