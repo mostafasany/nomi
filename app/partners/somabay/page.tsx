@@ -267,6 +267,7 @@ export default function SomabayProposalPage() {
         <ol className="space-y-3">
           {[
             "A short call or meeting to confirm interest and the type of spot available.",
+            "A tasting session — we bring the full range of rolls for your team to try, at a time and place that suits you.",
             "Somabay shares location options, trading terms, and design guidelines.",
             "We return a final cart design and footprint for approval.",
             "Agree commercial terms, trial period, and launch date.",
@@ -286,7 +287,8 @@ export default function SomabayProposalPage() {
         <h2 className="font-display text-3xl font-extrabold">Let&apos;s talk</h2>
         <p className="mt-3 max-w-xl text-cream/85">
           We would welcome the chance to discuss a trial at Somabay and answer
-          any questions on food safety, logistics, or the unit itself.
+          any questions on food safety, logistics, or the unit itself. We are
+          happy to arrange a tasting for your team whenever it suits you.
         </p>
         <dl className="mt-6 grid gap-5 sm:grid-cols-3">
           <div>
