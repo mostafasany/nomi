@@ -51,7 +51,9 @@ export default function SomabayProposalPage() {
       {/* ---------- cover ---------- */}
       <header className="print-avoid-break border-b border-cinnamon/15 pb-10">
         <div className="flex flex-wrap items-center gap-6">
-          <LogoBadge className="w-28 shrink-0" />
+          <div className="w-28 shrink-0">
+            <LogoBadge />
+          </div>
           <div>
             <p className="text-xs font-bold uppercase tracking-[0.3em] text-accent">
               Commercial Proposal
