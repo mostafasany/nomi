@@ -52,3 +52,6 @@ yarn-error.log*
 .idea/
 *.swp
 *.swo
+
+# generated proposal snapshot (regenerate from /partners/somabay)
+Nomi-Somabay-Proposal.pdf
