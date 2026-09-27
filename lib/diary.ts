@@ -27,8 +27,8 @@ export const DIARY: DiaryEntry[] = [
   {
     slug: "the-swirl-method",
     title: "The Swirl Method",
-    excerpt: "Why our spiral has 11 turns. Not 10, not 12.",
-    body: "Eleven is the sweet spot between dough surface area and filling distribution.",
+    excerpt: "How we get those soft, fluffy layers every time.",
+    body: "Slow proving and a light hand on the roll give us layers that pull apart instead of squashing.",
     date: "2026-05-01",
     tag: "behind-the-bake",
   },

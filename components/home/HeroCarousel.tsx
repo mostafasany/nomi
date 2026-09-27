@@ -131,7 +131,7 @@ export function HeroCarousel() {
               with it.
             </h1>
             <p className="mt-6 max-w-md text-lg text-cream/85">
-              One Nomi at a time. Buttery dough, eleven turns of cinnamon, and a
+              One Nomi at a time. Buttery dough, fluffy layers of cinnamon, and a
               glaze that knows what it&apos;s doing.
             </p>
             <div className="pointer-events-auto mt-8 flex flex-wrap gap-3">

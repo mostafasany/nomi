@@ -51,7 +51,9 @@ export default function SomabayProposalPage() {
       {/* ---------- cover ---------- */}
       <header className="print-avoid-break border-b border-cinnamon/15 pb-10">
         <div className="flex flex-wrap items-center gap-6">
-          <LogoBadge className="w-28 shrink-0" />
+          <div className="w-28 shrink-0">
+            <LogoBadge />
+          </div>
           <div>
             <p className="text-xs font-bold uppercase tracking-[0.3em] text-accent">
               Commercial Proposal
@@ -79,8 +81,9 @@ export default function SomabayProposalPage() {
           Nömi is an Egyptian cinnamon roll bakery. We would like to operate a
           small <strong>retail pop-up</strong> at Somabay to sell our rolls to
           guests and residents. All products are{" "}
-          <strong>baked and packed off-site</strong> at our own kitchen and
-          delivered ready for sale. We are therefore asking for a{" "}
+          <strong>baked off-site</strong> at our own kitchen and{" "}
+          <strong>packed on site</strong> at the cart when a customer orders.
+          We are therefore asking for a{" "}
           <strong>display and retail spot only</strong> — we do not need a
           production kitchen, extraction, or any cooking facility on site.
         </p>
@@ -88,7 +91,7 @@ export default function SomabayProposalPage() {
           {[
             { k: "What we need", v: "A display / retail pop-up spot" },
             { k: "What we don't need", v: "No production kitchen on site" },
-            { k: "Production", v: "100% off-site, delivered daily" },
+            { k: "Production", v: "Baked off-site, packed at the cart" },
           ].map((x) => (
             <div key={x.k} className="rounded-2xl bg-cream p-4">
               <dt className="text-xs font-semibold uppercase tracking-wider text-cocoa/60">
@@ -104,7 +107,7 @@ export default function SomabayProposalPage() {
       <Section eyebrow="About" title="Who we are">
         <p>
           Nömi is a small-batch cinnamon roll bakery. We make one thing and we
-          make it properly: buttery dough, eleven turns of cinnamon, and a glaze
+          make it properly: buttery dough, fluffy layers of cinnamon, and a glaze
           finished to order. Our rolls are sold in two formats — a full-size{" "}
           <strong>Classic</strong> roll and a shareable{" "}
           <strong>Bites</strong> box — with a short list of sauces and nut
@@ -124,16 +127,16 @@ export default function SomabayProposalPage() {
         <div className="grid gap-4 sm:grid-cols-2">
           {[
             {
-              t: "Baked off-site",
-              d: "Everything is produced and packed at our own kitchen. Nothing is baked, fried, or cooked at the Somabay location.",
+              t: "Baked at our kitchen",
+              d: "Rolls are cooked and baked at our own home kitchen. Nothing is baked, fried, or cooked at the Somabay location.",
             },
             {
-              t: "Delivered ready for sale",
-              d: "Stock arrives in sealed boxes, already portioned. Staff at the pop-up handle display, finishing, and service only.",
+              t: "Displayed in the pop-up cart",
+              d: "Rolls arrive baked and are displayed in the cart. Staff there handle display, packing, finishing, and service only — no cooking.",
             },
             {
-              t: "Display and serve",
-              d: "Rolls are held in a covered display. Sauces and nut toppings are added to order from sealed containers.",
+              t: "Finished to order",
+              d: "Rolls are kept in a covered display. Sauces and nut toppings are added when a customer orders, from sealed containers.",
             },
             {
               t: "Small footprint",
@@ -206,9 +209,12 @@ export default function SomabayProposalPage() {
             </tbody>
           </table>
         </div>
-        <p className="text-sm text-cocoa/70">
-          Prices are our current retail prices in {SITE.currencyCode} and can be
-          reviewed for the Somabay location.
+        <p className="print-avoid-break rounded-2xl border-l-4 border-accent bg-accent/5 p-4 text-sm">
+          <strong>Pricing note:</strong> the figures above are our current
+          retail prices in {SITE.currencyCode}. Final pricing for the Somabay
+          location is <strong>open to discussion and may be adjusted
+          according to the partnership terms</strong> we agree — including the
+          commercial model, location, and season.
         </p>
       </Section>
 
@@ -243,6 +249,7 @@ export default function SomabayProposalPage() {
           {[
             ["Location", "A compact retail spot in a footfall area — dimensions to be agreed."],
             ["Power", "A standard single-phase socket for lighting and the display unit."],
+            ["Food handling", "Rolls are packed at the cart, so access to a handwashing point nearby would be needed. We supply gloves, sanitiser, and sealed packaging, and will work to Somabay's food-safety requirements."],
             ["Trading terms", "Rent or revenue-share model, plus trading hours and season — open to your preferred structure."],
             ["Signage approval", "Branding and signage to follow Somabay's guidelines and sign-off."],
             ["Access", "Delivery access for a daily stock drop, and storage for the folded unit outside trading hours."],
@@ -262,6 +269,7 @@ export default function SomabayProposalPage() {
         <ol className="space-y-3">
           {[
             "A short call or meeting to confirm interest and the type of spot available.",
+            "A tasting session — we bring the full range of rolls for your team to try, at a time and place that suits you.",
             "Somabay shares location options, trading terms, and design guidelines.",
             "We return a final cart design and footprint for approval.",
             "Agree commercial terms, trial period, and launch date.",
@@ -281,7 +289,8 @@ export default function SomabayProposalPage() {
         <h2 className="font-display text-3xl font-extrabold">Let&apos;s talk</h2>
         <p className="mt-3 max-w-xl text-cream/85">
           We would welcome the chance to discuss a trial at Somabay and answer
-          any questions on food safety, logistics, or the unit itself.
+          any questions on food safety, logistics, or the unit itself. We are
+          happy to arrange a tasting for your team whenever it suits you.
         </p>
         <dl className="mt-6 grid gap-5 sm:grid-cols-3">
           <div>

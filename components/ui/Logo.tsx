@@ -27,7 +27,12 @@ export function LogoMark({ size = 40, className }: MarkProps) {
   );
 }
 
-/** Full circular logo badge. Responsive — control size via `className` (e.g. "w-72"). */
+/**
+ * Full circular logo badge. Fills its parent (`w-full`), so size it with a
+ * wrapper element rather than passing a width class: a `w-*` on `className`
+ * collides with the built-in `w-full` and the winner depends on stylesheet
+ * order, which differs between dev (JIT) and a production build.
+ */
 export function LogoBadge({ className }: BadgeProps) {
   return (
     <svg
