@@ -81,8 +81,9 @@ export default function SomabayProposalPage() {
           Nömi is an Egyptian cinnamon roll bakery. We would like to operate a
           small <strong>retail pop-up</strong> at Somabay to sell our rolls to
           guests and residents. All products are{" "}
-          <strong>baked and packed off-site</strong> at our own kitchen and
-          delivered ready for sale. We are therefore asking for a{" "}
+          <strong>baked off-site</strong> at our own kitchen and{" "}
+          <strong>packed on site</strong> at the cart when a customer orders.
+          We are therefore asking for a{" "}
           <strong>display and retail spot only</strong> — we do not need a
           production kitchen, extraction, or any cooking facility on site.
         </p>
@@ -90,7 +91,7 @@ export default function SomabayProposalPage() {
           {[
             { k: "What we need", v: "A display / retail pop-up spot" },
             { k: "What we don't need", v: "No production kitchen on site" },
-            { k: "Production", v: "100% off-site, delivered daily" },
+            { k: "Production", v: "Baked off-site, packed at the cart" },
           ].map((x) => (
             <div key={x.k} className="rounded-2xl bg-cream p-4">
               <dt className="text-xs font-semibold uppercase tracking-wider text-cocoa/60">
@@ -131,7 +132,7 @@ export default function SomabayProposalPage() {
             },
             {
               t: "Displayed in the pop-up cart",
-              d: "Rolls arrive ready for sale and are displayed in the cart. Staff there handle display, finishing, and service only.",
+              d: "Rolls arrive baked and are displayed in the cart. Staff there handle display, packing, finishing, and service only — no cooking.",
             },
             {
               t: "Finished to order",
