@@ -249,6 +249,7 @@ export default function SomabayProposalPage() {
           {[
             ["Location", "A compact retail spot in a footfall area — dimensions to be agreed."],
             ["Power", "A standard single-phase socket for lighting and the display unit."],
+            ["Food handling", "Rolls are packed at the cart, so access to a handwashing point nearby would be needed. We supply gloves, sanitiser, and sealed packaging, and will work to Somabay's food-safety requirements."],
             ["Trading terms", "Rent or revenue-share model, plus trading hours and season — open to your preferred structure."],
             ["Signage approval", "Branding and signage to follow Somabay's guidelines and sign-off."],
             ["Access", "Delivery access for a daily stock drop, and storage for the folded unit outside trading hours."],
