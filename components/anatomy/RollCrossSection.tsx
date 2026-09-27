@@ -1,7 +1,7 @@
 const LAYERS = [
   { label: "Glaze",            color: "#FFF7E8", note: "Cream cheese, made to drip." },
   { label: "Outer dough",      color: "#C98A4B", note: "Buttery, golden, sub-1mm crackle." },
-  { label: "Cinnamon swirl",   color: "#7A3E20", note: "Eleven turns. Brown sugar. Saigon cinnamon." },
+  { label: "Cinnamon swirl",   color: "#7A3E20", note: "Fluffy layers. Brown sugar. Saigon cinnamon." },
   { label: "Inner dough",      color: "#F6D9A8", note: "Pillow-soft. The reason for the hug." },
   { label: "Core",             color: "#3B1F12", note: "A pocket of warm glaze. Earned at the end." },
 ];

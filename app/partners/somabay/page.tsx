@@ -106,7 +106,7 @@ export default function SomabayProposalPage() {
       <Section eyebrow="About" title="Who we are">
         <p>
           Nömi is a small-batch cinnamon roll bakery. We make one thing and we
-          make it properly: buttery dough, eleven turns of cinnamon, and a glaze
+          make it properly: buttery dough, fluffy layers of cinnamon, and a glaze
           finished to order. Our rolls are sold in two formats — a full-size{" "}
           <strong>Classic</strong> roll and a shareable{" "}
           <strong>Bites</strong> box — with a short list of sauces and nut
@@ -126,16 +126,16 @@ export default function SomabayProposalPage() {
         <div className="grid gap-4 sm:grid-cols-2">
           {[
             {
-              t: "Baked off-site",
-              d: "Everything is produced and packed at our own kitchen. Nothing is baked, fried, or cooked at the Somabay location.",
+              t: "Baked at our kitchen",
+              d: "Rolls are cooked and baked at our own home kitchen. Nothing is baked, fried, or cooked at the Somabay location.",
             },
             {
-              t: "Delivered ready for sale",
-              d: "Stock arrives in sealed boxes, already portioned. Staff at the pop-up handle display, finishing, and service only.",
+              t: "Displayed in the pop-up cart",
+              d: "Rolls arrive ready for sale and are displayed in the cart. Staff there handle display, finishing, and service only.",
             },
             {
-              t: "Display and serve",
-              d: "Rolls are held in a covered display. Sauces and nut toppings are added to order from sealed containers.",
+              t: "Finished to order",
+              d: "Rolls are kept in a covered display. Sauces and nut toppings are added when a customer orders, from sealed containers.",
             },
             {
               t: "Small footprint",
@@ -208,9 +208,12 @@ export default function SomabayProposalPage() {
             </tbody>
           </table>
         </div>
-        <p className="text-sm text-cocoa/70">
-          Prices are our current retail prices in {SITE.currencyCode} and can be
-          reviewed for the Somabay location.
+        <p className="print-avoid-break rounded-2xl border-l-4 border-accent bg-accent/5 p-4 text-sm">
+          <strong>Pricing note:</strong> the figures above are our current
+          retail prices in {SITE.currencyCode}. Final pricing for the Somabay
+          location is <strong>open to discussion and may be adjusted
+          according to the partnership terms</strong> we agree — including the
+          commercial model, location, and season.
         </p>
       </Section>
 

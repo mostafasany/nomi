@@ -6,7 +6,7 @@ export default function AnatomyPage() {
     <PageShell
       eyebrow="Anatomy of a Nomi"
       title="What's inside the spiral."
-      subtitle="Five layers, eleven turns, and one small obsession."
+      subtitle="Five layers, fluffy all the way through, and one small obsession."
     >
       <RollCrossSection />
     </PageShell>

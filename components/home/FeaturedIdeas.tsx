@@ -15,7 +15,7 @@ const IDEAS = [
   {
     href: "/anatomy",
     title: "Anatomy of a Nomi",
-    blurb: "Layers, swirls, and 11 turns of why.",
+    blurb: "Fluffy layers, swirls, and the why behind them.",
   },
   {
     href: "/gift",
